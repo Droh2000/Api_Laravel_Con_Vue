@@ -14,6 +14,8 @@
     export default {
         methods:{
             clickMe(){
+                // Para usar las propiedades globales lo llamamos con this.
+                //console.log(this.$axios);
                 alert('Funciono Oruga')
             }
         }
