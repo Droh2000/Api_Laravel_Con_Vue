@@ -8,7 +8,7 @@ import '@oruga-ui/theme-oruga/dist/oruga.css';
 
 // AXIOS este ya viene por defecto en laravel y es una alternativa a FetchAPI
 // Vamos a exponer una propiedad global para que la podamo utilizar en cualquier parte de la app
-import { Axios } from 'axios';
+import axios from 'axios';
 
 // Importamos el componente de arranque (Componente Padre)
 import App from './app.vue';
@@ -20,9 +20,9 @@ const app = createApp(App);
 app.use(Oruga);
 
 // Le ponemos el nombre de "$axios" a la propiedad para diferenciarla le ponemos el signo de dolar
-app.config.globalProperties.$axios = Axios;
+app.config.globalProperties.$axios = axios;
 // lo exponemos en el objeto windows para JS
-window.axios = Axios
+window.axios = axios
 
 // Montamos la aplicacion en la pagina vue.blade.php por el ID
 app.mount('#app');
