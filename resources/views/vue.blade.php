@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <!-- Cargamos los recursos de Vue -->
-    @vite(['resources\js\vue\main.js'])
+    @vite(['resources/js/vue/main.js'])
+
 </head>
 <body>
     <!-- Aqui es donde se va a renderizar nuestra aplicacion en VUE -->
