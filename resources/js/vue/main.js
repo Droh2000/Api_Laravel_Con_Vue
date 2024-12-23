@@ -5,6 +5,7 @@ import { createApp } from 'vue';
 import Oruga from '@oruga-ui/oruga-next';
 // Le agregamos los estilos de oruga Themw
 import '@oruga-ui/theme-oruga/dist/oruga.css';
+import '@mdi/font/css/materialdesignicons.min.css';
 
 // AXIOS este ya viene por defecto en laravel y es una alternativa a FetchAPI
 // Vamos a exponer una propiedad global para que la podamo utilizar en cualquier parte de la app
