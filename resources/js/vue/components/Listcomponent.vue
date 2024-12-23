@@ -29,7 +29,7 @@
                 {{ p.row.posted }}
             </o-table-column>
             <o-table-column field="category_id" label="Category" v-slot="p">
-                {{ p.row.category_id }}
+                {{ p.row.category.title }}
             </o-table-column>
          </o-table>
 

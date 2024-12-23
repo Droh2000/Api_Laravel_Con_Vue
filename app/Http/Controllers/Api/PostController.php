@@ -17,7 +17,9 @@ class PostController extends Controller
 
     public function index()
     {
-        return response()->json(Post::paginate(10));
+        // Aqui se le modifico para obtener todas las categorias por la relacion del POST
+        // Aqui la obtiene para todos los POSTs y solo le pasamos el nombre de la relacion 'category'
+        return response()->json(Post::with('category')->paginate(10));
     }
 
     public function store(StoreRequest $request)
