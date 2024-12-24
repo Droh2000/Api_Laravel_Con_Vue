@@ -14,11 +14,14 @@ import axios from 'axios';
 // Importamos el componente de arranque (Componente Padre)
 import App from './app.vue';
 
+// Para las rutas
+import router from './router';
+
 // Creamos la aplicacion mandandole el componente de arranque que es el componente padre de todo
 const app = createApp(App);
 
 // Asi se hace para VUE use el paquete
-app.use(Oruga);
+app.use(Oruga).use(router);
 
 // Le ponemos el nombre de "$axios" a la propiedad para diferenciarla le ponemos el signo de dolar
 app.config.globalProperties.$axios = axios;
