@@ -1,4 +1,17 @@
 <template>
+    <!-- Vamos a hacer la navegacion entre este componente y el de Save 
+        Le pasamos como nombre lo que le especificamos en el router.js 
+
+        Hay que tener en cuenta que la ruta de "save" solo se puede acceder en este caso con este boton
+        si lo escribimos directamente en el navegador nos saldra un 404 porque esta ruta no esta definida
+        en Laravel
+        Si no queremos usar las rutas por nombre podemos poner directamente la URL:
+            to={'/save'}
+        Con esto tambien hay que fijarnos que al cambiar de paginas no se actualiza la pagina solo cambia la parte donde se
+        renderiza el componente (Lo que seria la parte del "router-view")
+    -->
+    <router-link :to="{ name:'save' }">Create</router-link>
+
     <div>
         <h1>Post List</h1>
 
@@ -31,6 +44,11 @@
             </o-table-column>
             <o-table-column field="category_id" label="Category" v-slot="p">
                 {{ p.row.category.title }}
+            </o-table-column>
+
+            <o-table-column field="" label="Actions" v-slot="p">
+                <!-- Aqui le vamos a pasar parametros  -->
+                <router-link :to="{ name:'save', params:{ 'slug': p.row.slug } }">Edit</router-link>
             </o-table-column>
          </o-table>
 
@@ -66,6 +84,8 @@
     </div>
 </template>
 <script>
+import { RouterLink } from 'vue-router';
+
 
     export default {
         // Aqui colocamos las propiedades que va a tener el componente

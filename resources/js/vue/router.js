@@ -1,5 +1,5 @@
 // Crear el ruteo con VUE Router
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 
 // Aqui creamos los componentes
 import List from './components/ListComponent.vue';
@@ -14,14 +14,14 @@ const routes = [
     },
     {
         name: 'save',
-        path: '/',
+        path: '/save', // Para el otro componente si tendra otra ruta diferente
         component: Save
     }
 ];
 
 // Creamos las rutas
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(), // El que dice Hash le agrega la # en la URL y este es el funcionamiento normal de la URL
     routes: routes,
 });
 
