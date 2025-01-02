@@ -10,7 +10,11 @@
 
 </head>
 <body>
-    <!-- Aqui es donde se va a renderizar nuestra aplicacion en VUE -->
-    <div id="app"></div>
+    <!-- Aqui es donde se va a renderizar nuestra aplicacion en VUE 
+        Despues de instalarle el tailwindcss le agregamos el cotainr y para centrar la app
+    -->
+    <div class="container mx-auto">
+        <div id="app"></div>
+    </div>
 </body>
 </html>
