@@ -34,8 +34,8 @@ class PostController extends Controller
 
     public function slug(string $slug)
     {
-        $category = Post::where('slug', $slug)->firstOrFail();
-        return response()->json($category);
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return response()->json($post);
     }
 
     public function update(PutRequest $request, Post $post)

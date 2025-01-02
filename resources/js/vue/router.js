@@ -14,7 +14,9 @@ const routes = [
     },
     {
         name: 'save',
-        path: '/save', // Para el otro componente si tendra otra ruta diferente
+        // Para el otro componente si tendra otra ruta diferente, Aqui le decimos que va a recibir un parametro
+        // que es el SLUG que sera opcional por eso simbolo de interrogacion por tanto debemos verificar si esta en la peticion o no
+        path: '/save/:slug?', 
         component: Save
     }
 ];
