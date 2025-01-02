@@ -3,6 +3,9 @@ import { createApp } from 'vue';
 
 // De este framework vamos a usar los componentes 
 import Oruga from '@oruga-ui/oruga-next';
+
+import '../../css/vue.css'; // Importacion del Tailwindcss
+
 // Le agregamos los estilos de oruga Themw
 import '@oruga-ui/theme-oruga/dist/oruga.css';
 import '@mdi/font/css/materialdesignicons.min.css';
