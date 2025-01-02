@@ -49,6 +49,8 @@
             <o-table-column field="" label="Actions" v-slot="p">
                 <!-- Aqui le vamos a pasar parametros  -->
                 <router-link :to="{ name:'save', params:{ 'slug': p.row.slug } }">Edit</router-link>
+                <!-- Este es para la opcion de eliminar -->
+                 <o-button variant="danger" @click="deletePost( p )">Delete</o-button>
             </o-table-column>
          </o-table>
 
@@ -133,6 +135,16 @@ import { RouterLink } from 'vue-router';
                     this.posts = res.data;
                     this.isLoading = false;
                 });
+            },
+            deletePost(row){
+                // Para llamar al metodo de eliminar
+                // En este para pasarle el valor a la ruta no es tan directo porque tenemos un sistema de ROW creado por ORUGA
+                // para encontrar la ruta podriamos colocarle un console.log y asi agregar un punto de interrupcion
+                this.$axios.delete('/api/post/'+row.row.id);
+                // Aqui eliminamos en la BD pero tambien tenemos los datos almacenados en el arreglo "posts" asi que tenemos que actualizar eso
+                // tenemos que eliminar el elemento del arrray (Esta operacion tiene que ser reconocida por el modo reactivo de VUE)
+                // Aqui eliminamos por la ubicacion por eso usamos el index
+                this.posts.data.splice(row.index, 1);
             }
         }
     }

@@ -65,7 +65,7 @@
         data(){
             return {
                 categories:[],
-                post:'', // Para guardar el POST
+                post: '', // Para guardar el POST
                 // Para mapear una variable con un campo del formulario, dentro definimos cada campo
                 form:{
                     title:'',
@@ -114,9 +114,8 @@
             },
             send(){
                 this.cleanErrorsForm();
-
                 // Vamos a verificar si estamos editando o creando
-                if(this.post === '' ){
+                if(this.post === ''){
                     // Estamos Creando
                     // Este es el metodo es el que cambia que manda a llamar el formulario
                     // Ademas le pasamos el Slug que estamos actualizando que seria como el ID del registro
