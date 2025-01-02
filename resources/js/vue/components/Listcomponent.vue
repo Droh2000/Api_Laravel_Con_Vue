@@ -9,81 +9,90 @@
             to={'/save'}
         Con esto tambien hay que fijarnos que al cambiar de paginas no se actualiza la pagina solo cambia la parte donde se
         renderiza el componente (Lo que seria la parte del "router-view")
-    -->
+    
     <router-link :to="{ name:'save' }">Create</router-link>
+    -->
 
-    <div>
-        <h1>Post List</h1>
+    <h1>Post List</h1>
 
+    <!--
+        Aqui cambiamos a o-button para implementarlo con oruga
+        ademas le implementamos la naegacion de forma manual donde el name es el que esta definido en "router.js"
+    -->
+    <o-button iconLeft="plus" @click="$router.push({name: 'save'})">Create</o-button>
+
+    <div class="mb-5"></div>
+    
+    <!--
         <o-button @click="clickMe">Click Me</o-button>
 
         <o-field label="Email" variant="danger">
             <o-input type="Email" value="example@mail.com"></o-input>
         </o-field>
+    -->
 
+    <!-- 
+        Metemos los datos obtenidos de la RESP APi a esta tabla 
+        En "data" indicamos los datos que estamos trabajando y le especificamos dos puntos
+        para que evalue la condicion en JS que le colocamos (Le pasamos la pripeidad lista que tiene los datos)
+        ponemos "posts.data" para acceder a los datos de la API ya que por defecto obtenemos los datos con todas las propieades del JSON
+        -->
+        <o-table :data="posts.data" :loading="isLoading">
+        <!-- "filed" tiene que tener el mismo nombre del JSON que obtenemos de respuesta 
+            "label" es el como se va a mostrar en la pagina
+            "v-slot" es para crear una variable local en este ambito que la usaremos para imprimr la data
+        -->
+        <o-table-column field="id" label="Id" v-slot="p">
+            {{ p.row.id }}
+        </o-table-column>
+        <o-table-column field="title" label="Title" v-slot="p">
+            {{ p.row.title }}
+        </o-table-column>
+        <o-table-column field="posted" label="Posted" v-slot="p">
+            {{ p.row.posted }}
+        </o-table-column>
+        <o-table-column field="category_id" label="Category" v-slot="p">
+            {{ p.row.category.title }}
+        </o-table-column>
+
+        <o-table-column field="" label="Actions" v-slot="p">
+            <!-- Aqui le vamos a pasar parametros  -->
+            <router-link class="mr-3" :to="{ name:'save', params:{ 'slug': p.row.slug } }">Edit</router-link>
+            <!-- Este es para la opcion de eliminar -->
+                <o-button iconLeft="delete" variant="danger" size="small" rounded @click="deletePost( p )">Delete</o-button>
+        </o-table-column>
+        </o-table>
+
+        <div class="mb-5"></div>
 
         <!-- 
-            Metemos los datos obtenidos de la RESP APi a esta tabla 
-            En "data" indicamos los datos que estamos trabajando y le especificamos dos puntos
-            para que evalue la condicion en JS que le colocamos (Le pasamos la pripeidad lista que tiene los datos)
-            ponemos "posts.data" para acceder a los datos de la API ya que por defecto obtenemos los datos con todas las propieades del JSON
-         -->
-         <o-table :data="posts.data" :loading="isLoading">
-            <!-- "filed" tiene que tener el mismo nombre del JSON que obtenemos de respuesta 
-                "label" es el como se va a mostrar en la pagina
-                "v-slot" es para crear una variable local en este ambito que la usaremos para imprimr la data
-            -->
-            <o-table-column field="id" label="Id" v-slot="p">
-                {{ p.row.id }}
-            </o-table-column>
-            <o-table-column field="title" label="Title" v-slot="p">
-                {{ p.row.title }}
-            </o-table-column>
-            <o-table-column field="posted" label="Posted" v-slot="p">
-                {{ p.row.posted }}
-            </o-table-column>
-            <o-table-column field="category_id" label="Category" v-slot="p">
-                {{ p.row.category.title }}
-            </o-table-column>
+        Componente de Paginacion 
+        "v-if" -> Es la condicion para cuando solamente lo vamos a mostrar (Si al inicio no tiene datos dara error
+                    asi que le ponemos una condicion AND para que pueda verificar la propiedad Lenght donde al inicio
+                    verifica si se encuentra definido el arreglo)
+        "@change" -> Llamamos la funcion que creamos para actualizar la propiedad de paginacion
+        "v-model" -> Es la forma que tenemos para mapear o hacer match entre una propieadad definida en data()
+                        con un campo que puede ser un input (o cualquier otro del formulario) y asi obtener su valor
+        Definimos los rangos que vamos a mostrar antes o despues 
+        "size" -> Le definimos el nombre de la etiqueta HTML
+        Le decimos que queremos un diseno simple
+        Lo queremos redondeado
+        Le decimos que por paginas tome lo que ya tenemos en las propiedades
+        -->
+        <o-pagination
+        v-if="posts.data && posts.data.length > 0"
+        @change="updatePage"
+        :total="posts.total"
+        v-model:current="currentPage"
+        :range-before="2"
+        :range-after="2"
+        size="small"
+        :simple="false"
+        :rounded="true"
+        :per-page="posts.per_page"
+        >
 
-            <o-table-column field="" label="Actions" v-slot="p">
-                <!-- Aqui le vamos a pasar parametros  -->
-                <router-link :to="{ name:'save', params:{ 'slug': p.row.slug } }">Edit</router-link>
-                <!-- Este es para la opcion de eliminar -->
-                 <o-button variant="danger" @click="deletePost( p )">Delete</o-button>
-            </o-table-column>
-         </o-table>
-
-         <!-- 
-            Componente de Paginacion 
-            "v-if" -> Es la condicion para cuando solamente lo vamos a mostrar (Si al inicio no tiene datos dara error
-                        asi que le ponemos una condicion AND para que pueda verificar la propiedad Lenght donde al inicio
-                        verifica si se encuentra definido el arreglo)
-            "@change" -> Llamamos la funcion que creamos para actualizar la propiedad de paginacion
-            "v-model" -> Es la forma que tenemos para mapear o hacer match entre una propieadad definida en data()
-                         con un campo que puede ser un input (o cualquier otro del formulario) y asi obtener su valor
-            Definimos los rangos que vamos a mostrar antes o despues 
-            "size" -> Le definimos el nombre de la etiqueta HTML
-            Le decimos que queremos un diseno simple
-            Lo queremos redondeado
-            Le decimos que por paginas tome lo que ya tenemos en las propiedades
-          -->
-          <o-pagination
-            v-if="posts.data && posts.data.length > 0"
-            @change="updatePage"
-            :total="posts.total"
-            v-model:current="currentPage"
-            :range-before="2"
-            :range-after="2"
-            size="small"
-            :simple="false"
-            :rounded="true"
-            :per-page="posts.per_page"
-          >
-
-          </o-pagination>
-
-    </div>
+        </o-pagination>
 </template>
 <script>
 import { RouterLink } from 'vue-router';

@@ -1,6 +1,5 @@
 <template lang="">
     <div>
-        <h1>Principal</h1>
         <!-- Este es un componente -->
         <!-- <list/> -->
 
