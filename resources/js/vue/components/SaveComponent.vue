@@ -1,5 +1,10 @@
 <template>
-    <div>
+
+    <!-- Este titulo lo mostramos solo si el POSt esta definido sino se muestra el de else-->
+     <h1 v-if="post">Update Post <span class="font-bold">{{ post.title }}</span></h1>
+     <h1 v-else>Create Post</h1>
+
+    <div class="grid grid-cols-2 gap-3">
         <!-- Como estos campos estan unidos con las varibales de JS se le quito el valor "value"
             ya que el valor por defecto ya esta definido en las variables 
             
@@ -8,13 +13,11 @@
                 En el que si esta definido le establecemos el estilo correspondiente de "danger" o "primary"
             Con "message" es para mostrar el mensaje
         -->
-        <o-field label="Title" :variant="errors.title ? 'danger' : 'primary'" :message="errors.title">
-            <o-input v-model="form.title"></o-input>
-        </o-field>
-
-        <o-field label="Slug" :variant="errors.slug ? 'danger' : 'primary'" :message="errors.slug">
-            <o-input v-model="form.slug"></o-input>
-        </o-field>
+        <div class="col-span-2">
+            <o-field label="Title" :variant="errors.title ? 'danger' : 'primary'" :message="errors.title">
+                <o-input v-model="form.title"></o-input>
+            </o-field>
+        </div>
 
         <o-field label="Content" :variant="errors.content ? 'danger' : 'primary'" :message="errors.content">
             <o-input v-model="form.content" type="textarea"></o-input>
@@ -22,6 +25,10 @@
         
         <o-field label="Description" :variant="errors.description ? 'danger' : 'primary'" :message="errors.description">
             <o-input v-model="form.description" type="textarea"></o-input>
+        </o-field>
+
+        <o-field label="Slug" :variant="errors.slug ? 'danger' : 'primary'" :message="errors.slug">
+            <o-input v-model="form.slug"></o-input>
         </o-field>
 
         <o-field label="Posted" :variant="errors.posted ? 'danger' : 'primary'" :message="errors.posted">
@@ -38,6 +45,9 @@
                 <option v-for="c in  categories" v-bind:key="c.id" :value="c.id">{{ c.title }}</option>
             </o-select>
         </o-field>
+    </div>
+
+    <div class="mt-3">
         <o-button variant="primary" @click="send">Send</o-button>
     </div>
 </template>
