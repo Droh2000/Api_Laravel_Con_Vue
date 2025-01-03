@@ -13,6 +13,23 @@
     <router-link :to="{ name:'save' }">Create</router-link>
     -->
 
+    <!-- 
+            Implementacion del modal
+
+                Con "v-model" indicamos si se va a activar o no
+    -->
+    <o-modal v-model:active="confirmDeleteAction">
+        <div class="p-4">
+            <p>¿Seguro que quieres eliminar el registro?</p>
+
+            <div class="flex flex-row-reverse gap-2 bg-gray-100 p-3">
+                <o-button variant="danger" @click="deletePost">Delete</o-button>
+                <o-button @click="confirmDeleteAction=false">Cancel</o-button>
+            </div>
+        </div>
+    </o-modal>
+    
+
     <h1>Post List</h1>
 
     <!--
@@ -58,8 +75,10 @@
         <o-table-column field="" label="Actions" v-slot="p">
             <!-- Aqui le vamos a pasar parametros  -->
             <router-link class="mr-3" :to="{ name:'save', params:{ 'slug': p.row.slug } }">Edit</router-link>
-            <!-- Este es para la opcion de eliminar -->
-                <o-button iconLeft="delete" variant="danger" size="small" rounded @click="deletePost( p )">Delete</o-button>
+            <!-- Este es para la opcion de eliminar que al hacer click guardamos el ROW
+                 y ademas activamos el modal
+            -->
+                <o-button iconLeft="delete" variant="danger" size="small" rounded @click="deletePostRow = p; confirmDeleteAction=true;">Delete</o-button>
         </o-table-column>
         </o-table>
 
@@ -106,6 +125,9 @@ import { RouterLink } from 'vue-router';
                 isLoading: true,
                 // Esta popiedad es para la paginacion
                 currentPage: 1,
+                // Propiedades con las cual vamos a eliminar
+                confirmDeleteAction: false, // este es para desplegar un modal
+                deletePostRow: '', // indica el ID del registro que queremos eliminar
             }
         },
         // Este metodo forma parte del ciclo de vida de la APP en vue
@@ -145,15 +167,17 @@ import { RouterLink } from 'vue-router';
                     this.isLoading = false;
                 });
             },
-            deletePost(row){
+            //deletePost(row){
+            deletePost(){ // despues de creado el modal ya no se le pasa el row y se usa el "deletePostRow"
                 // Para llamar al metodo de eliminar
                 // En este para pasarle el valor a la ruta no es tan directo porque tenemos un sistema de ROW creado por ORUGA
                 // para encontrar la ruta podriamos colocarle un console.log y asi agregar un punto de interrupcion
-                this.$axios.delete('/api/post/'+row.row.id);
+                this.$axios.delete('/api/post/'+this.deletePostRow.row.id);
                 // Aqui eliminamos en la BD pero tambien tenemos los datos almacenados en el arreglo "posts" asi que tenemos que actualizar eso
                 // tenemos que eliminar el elemento del arrray (Esta operacion tiene que ser reconocida por el modo reactivo de VUE)
                 // Aqui eliminamos por la ubicacion por eso usamos el index
-                this.posts.data.splice(row.index, 1);
+                this.posts.data.splice(this.deletePostRow.index, 1);
+                this.confirmDeleteAction = false; // para cerrar el modal una vez eliminada
             }
         }
     }
