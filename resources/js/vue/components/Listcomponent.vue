@@ -178,6 +178,15 @@ import { RouterLink } from 'vue-router';
                 // Aqui eliminamos por la ubicacion por eso usamos el index
                 this.posts.data.splice(this.deletePostRow.index, 1);
                 this.confirmDeleteAction = false; // para cerrar el modal una vez eliminada
+
+                // Mensaje que se muestra cuando la accion se realizo
+                this.$oruga.notification.open({
+                    message: 'Delete Success',
+                    position: 'bottom-right',
+                    variant: 'danger',
+                    duration: 4000,
+                    closable: true,
+                });
             }
         }
     }

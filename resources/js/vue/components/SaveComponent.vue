@@ -129,8 +129,17 @@
                     // Estamos Creando
                     // Este es el metodo es el que cambia que manda a llamar el formulario
                     // Ademas le pasamos el Slug que estamos actualizando que seria como el ID del registro
-                    this.$axios.patch('/api/post/'+this.post.id,this.form).then(res => {
+                    this.$axios.post('/api/post/'+this.post.id,this.form).then(res => {
                         console.log(res);
+
+                        // Mensaje que se muestra cuando la accion se realizo
+                        this.$oruga.notification.open({
+                            message: 'Record Create Success',
+                            position: 'bottom-right',
+                            duration: 4000,
+                            closable: true,
+                        });
+
                     }).catch(error => {
                         // Mostramos los errroes que se indican en la ruta si esta definida
                         // Para saber la ruta de acceso de los mensajes se Debugeo el codigo en el navegador en el video del nombr del Commit pertinente
@@ -158,8 +167,17 @@
                 }else{
                     // Estamos Editando
                     // Este es el metodo que manda a llamar el formulario
-                    this.$axios.post('/api/post',this.form).then(res => {
+                    this.$axios.patch('/api/post',this.form).then(res => {
                         console.log(res);
+
+                        // Mensaje que se muestra cuando la accion se realizo
+                        this.$oruga.notification.open({
+                            message: 'Record Update Success',
+                            position: 'bottom-right',
+                            duration: 4000,
+                            closable: true,
+                        });
+
                     }).catch(error => {
                         // Mostramos los errroes que se indican en la ruta si esta definida
                         // Para saber la ruta de acceso de los mensajes se Debugeo el codigo en el navegador en el video del nombr del Commit pertinente
