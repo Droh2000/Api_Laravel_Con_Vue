@@ -53,16 +53,21 @@
 
     <!-- Esto solo lo vamos a mostrar si tenemos un POST -->
     <div class="flex gap-2 mt-5" v-if="post"> 
-        <!--
+        <!-- Para mostrar el mensaje si fallan las validaciones se usa primero esto -->
+        <o-field :message="fileError">
+            <!--
             Componente para subir Archivo
                 Le especificamos el modelo "file" que creamos
-        -->
-        <o-upload v-model="file">
-            <o-button tag="button" variant="primary">
-                <o-icon icon="upload"></o-icon>
-                <span>Click to upload</span>
-            </o-button>
-        </o-upload>
+                El atributo TAG nos activa el boton para poder utilizarlo con el proceso de upload
+                    y asi nos muestra la ventana de dialogo
+            -->
+            <o-upload v-model="file" :variant="fileError ? 'danger' : 'primary'">
+                <o-button tag="button-tag" variant="primary">
+                    <o-icon icon="upload"></o-icon>
+                    <span>Click to upload</span>
+                </o-button>
+            </o-upload>
+        </o-field>
 
         <o-button icon-left="upload" @click="upload">
             Upload
@@ -113,6 +118,7 @@
                     posted:'',
                 },
                 file: null, // Para almacenar archivos que se suban
+                fileError: '', // Para mostrar el error al subir el archivo
             }
         },
         methods:{
@@ -148,7 +154,7 @@
                     // Estamos Creando
                     // Este es el metodo es el que cambia que manda a llamar el formulario
                     // Ademas le pasamos el Slug que estamos actualizando que seria como el ID del registro
-                    this.$axios.post('/api/post/'+this.post.id,this.form).then(res => {
+                    this.$axios.post('/api/post/',this.form).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -186,7 +192,7 @@
                 }else{
                     // Estamos Editando
                     // Este es el metodo que manda a llamar el formulario
-                    this.$axios.patch('/api/post',this.form).then(res => {
+                    this.$axios.patch('/api/post'+this.post.id,this.form).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -225,6 +231,8 @@
             },
             // Metodo para subir una imagen 
             upload(){
+                // Limpiamos los errores para cuando se envue otra vez no se quede con el error anterior
+                this.fileError='';
                 // Como vamos a enviar una peticion de tipo formulario pero esta viene siendo con el formato JavaScript
                 // Las peticiones que hemos hecho antes son diferentes a enviarlas mediante un formulario
                 const formData = new FormData();
@@ -240,6 +248,7 @@
                 }).then((res) => {
                     console.log(res);
                 }).catch((error) => {
+                    this.fileError=error.response.data.message;
                     console.log(error);
                 });
             }

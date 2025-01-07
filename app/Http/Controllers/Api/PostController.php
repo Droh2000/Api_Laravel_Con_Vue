@@ -52,6 +52,13 @@ class PostController extends Controller
     }
 
     function upload(Request $request, Post $post) {
+
+        // Validaciones para que solo acepte los archivos permitidos
+        $request->validate([
+            'image' => 'required|mimes:jpg, jpeg, png, gif|max:10240'
+        ]);
+
+
         // Primero generamos el nombre de la imagen
         // El time es para darle un nombre unico de archivo
         // e; nombre ['image'] es el que definimos en el Modelo de Post en la variable Fillable
