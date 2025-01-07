@@ -27,7 +27,10 @@ return [
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
     */
-
+    // Borrar archivos anteriores
+    // Para esto vamos a usar los discos que son sistemas de almacenamiento
+    // que pueden ser locales o de cualquier otro servicio en la nube
+    // Con esto podemos cargar los archivos y eliminanrlos
     'disks' => [
 
         'local' => [
@@ -43,6 +46,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+
+        // Creamos un nuevo disco
+        // Tenemos que apuntar al Public_path que es la ruta donde estamos almacenando las imagenes
+        'public_upload' => {
+            'driver' => 'local', // Apuntamos al almacenamiento local
+            'root' => public_path(), // Apuntamos a la ruta local
+        },
 
         's3' => [
             'driver' => 's3',

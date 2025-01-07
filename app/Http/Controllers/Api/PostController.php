@@ -7,6 +7,7 @@ use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Storage;
 
 class PostController extends Controller
 {
@@ -58,6 +59,9 @@ class PostController extends Controller
             'image' => 'required|mimes:jpg, jpeg, png, gif|max:10240'
         ]);
 
+        // Configuracion para eliminar le pasamos la ruta
+        // Asi lo que hacemos es borrar la imagen si ya existe en un post y no haiga duplicados o mas
+        Storage::disk('public_upload')->delete('image/'.$post->image);
 
         // Primero generamos el nombre de la imagen
         // El time es para darle un nombre unico de archivo
