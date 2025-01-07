@@ -17,3 +17,5 @@ Route::get('post/all', [PostController::class, 'all']);
 Route::get('post/slug/{slug}', [PostController::class, 'slug']);
 Route::resource('post', PostController::class)->except(['create', 'edit']);
 
+// Definimos la ruta para subir archivos
+Route::post('post/upload/{post}',[PostController::class, 'upload']);

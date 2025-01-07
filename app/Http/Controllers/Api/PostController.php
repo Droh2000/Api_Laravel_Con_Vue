@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -48,5 +49,20 @@ class PostController extends Controller
     {
         $post->delete();
         return response()->json('ok');
+    }
+
+    function upload(Request $request, Post $post) {
+        // Primero generamos el nombre de la imagen
+        // El time es para darle un nombre unico de archivo
+        // e; nombre ['image'] es el que definimos en el Modelo de Post en la variable Fillable
+        $data['image'] = $filename = time() . '.' . $request->image->extension();
+
+        // Metodo de public path nos regresa la carpeta public que es la unica que se puede acceder mediante
+        // el navegador y le indicamos que almacenaremos en la carpeta 'image'
+        $request->image->move(public_path('image'), $filename);
+
+        $post->update($data);
+
+        return response()->json($post);
     }
 }

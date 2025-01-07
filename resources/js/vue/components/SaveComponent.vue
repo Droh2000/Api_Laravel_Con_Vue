@@ -50,6 +50,24 @@
     <div class="mt-3">
         <o-button variant="primary" @click="send">Send</o-button>
     </div>
+
+    <!-- Esto solo lo vamos a mostrar si tenemos un POST -->
+    <div class="flex gap-2 mt-5" v-if="post"> 
+        <!--
+            Componente para subir Archivo
+                Le especificamos el modelo "file" que creamos
+        -->
+        <o-upload v-model="file">
+            <o-button tag="button" variant="primary">
+                <o-icon icon="upload"></o-icon>
+                <span>Click to upload</span>
+            </o-button>
+        </o-upload>
+
+        <o-button icon-left="upload" @click="upload">
+            Upload
+        </o-button>
+    </div>
 </template>
 
 <script>
@@ -94,6 +112,7 @@
                     category_id:'',
                     posted:'',
                 },
+                file: null, // Para almacenar archivos que se suban
             }
         },
         methods:{
@@ -203,6 +222,26 @@
 
                     });
                 }
+            },
+            // Metodo para subir una imagen 
+            upload(){
+                // Como vamos a enviar una peticion de tipo formulario pero esta viene siendo con el formato JavaScript
+                // Las peticiones que hemos hecho antes son diferentes a enviarlas mediante un formulario
+                const formData = new FormData();
+                // A este objeto le indicamos el campo que es 'image' ya que el POSt va por la ruta
+                formData.append('image', this.file);
+                // Luego hacemos la peticion con el Axios y aqui le pasamos la data que no es el JSON sino el FormData
+                this.$axios.post('/api/post/upload/'+this.post.id, formData, {
+                    // Especificamos las opciones de envio
+                    headers: {
+                        'Content-Type' : 'multipart/form-data' // Aqui especificamos que es de formulario
+                    }
+                // El Then es cuando nos regrese todo OK
+                }).then((res) => {
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                });
             }
         }
     }
