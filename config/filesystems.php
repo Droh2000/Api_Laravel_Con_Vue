@@ -49,10 +49,10 @@ return [
 
         // Creamos un nuevo disco
         // Tenemos que apuntar al Public_path que es la ruta donde estamos almacenando las imagenes
-        'public_upload' => {
+        'public_upload' => [
             'driver' => 'local', // Apuntamos al almacenamiento local
             'root' => public_path(), // Apuntamos a la ruta local
-        },
+        ],
 
         's3' => [
             'driver' => 's3',

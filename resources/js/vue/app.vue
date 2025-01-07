@@ -25,6 +25,27 @@
             List
         }
     }*/
+
+   /*
+   Migrar Rutas a App.vue
+        Asi tenemos todas las rutas en un solo lugar y no regadas por toda la app
+        Como es una app pequena se puede hacer en el componente padre y no hay necesidad de
+        hacerlo en un sistema de manejador de estado
+   */
+    export default {
+        data() {
+            return {
+                urls: {
+                    postUpload: '/api/post/upload',
+                    postPatch: '/api/post',
+                    postPost: '/api/post',
+                    getPostBySlug: '/api/post/slug/',
+                    getPostCategories: '/api/category/all',
+
+                }
+            }
+        }
+    }
 </script>
 
 <!-- 

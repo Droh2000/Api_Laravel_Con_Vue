@@ -104,7 +104,7 @@
             if(this.$route.params.slug){
                 // Es await porque despues vamos a ejecutar otra tarea que es la de inicializar el POST
                 // Con AXIOS buscamos por el SLUG, a la respuesta de peticion le agregamos el parametro Slug
-                this.post = await this.$axios.get("/api/post/slug/"+this.$route.params.slug);
+                this.post = await this.$axios.get(this.$root.urls.getPostBySlug+this.$route.params.slug);
                 this.post = this.post.data; // Accedemos solo a la Data ya que sabemos como esta compuesta
                 // Inicializamos el Post (Por eso es un await porque queremos esperar a obtener la respuesta para poder hacer esta operacion)
                 this.initPost();
@@ -144,7 +144,7 @@
             // Para obtener la categoria y mostrar en el campo de "Category"
             // Esta no es asyncrona porque no nos insteresa esperar a termine ya que abajo no hay mas instrucciones a ejecutar
             getCategory(){
-                this.$axios.get('/api/category/all').then((res)=>{
+                this.$axios.get(this.$root.urls.getPostCategories).then((res)=>{
                     this.categories = res.data;
                 });
             },
@@ -173,7 +173,7 @@
                     // Estamos Creando
                     // Este es el metodo es el que cambia que manda a llamar el formulario
                     // Ademas le pasamos el Slug que estamos actualizando que seria como el ID del registro
-                    this.$axios.post('/api/post',this.form).then(res => {
+                    this.$axios.post(this.$root.urls.postPost,this.form).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -211,7 +211,7 @@
                 }else{
                     // Estamos Editando
                     // Este es el metodo que manda a llamar el formulario
-                    this.$axios.patch('/api/post'+this.post.id,this.form).then(res => {
+                    this.$axios.patch(this.$root.urls.postPatch+this.post.id,this.form).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -258,7 +258,7 @@
                 // A este objeto le indicamos el campo que es 'image' ya que el POSt va por la ruta
                 formData.append('image', this.file);
                 // Luego hacemos la peticion con el Axios y aqui le pasamos la data que no es el JSON sino el FormData
-                this.$axios.post('/api/post/upload/'+this.post.id, formData, {
+                this.$axios.post(this.$root.urls.postUpload+this.post.id, formData, {
                     // Especificamos las opciones de envio
                     headers: {
                         'Content-Type' : 'multipart/form-data' // Aqui especificamos que es de formulario
@@ -282,7 +282,10 @@
                     const formData = new FormData();
                     // En este caso lo hacemos con el 'val' y asi hacemos referencia al ultimo elemento cargado
                     formData.append('image', val[val.length-1]);
-                    this.$axios.post('/api/post/upload/'+this.post.id, formData, {
+                    // Acceder a la rutas definidas en el componente app.vue
+                    // Accedemos a la raiz que es App.vue, la propiedad que queremos emplear es urls 
+                    // y el nombre de la propiedad del objeto que tiene la URL
+                    this.$axios.post(this.$root.urls.postUpload+this.post.id, formData, {
                         headers: {
                             'Content-Type' : 'multipart/form-data'
                         }
