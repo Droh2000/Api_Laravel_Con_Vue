@@ -54,14 +54,14 @@
     <!-- Esto solo lo vamos a mostrar si tenemos un POST -->
     <div class="flex gap-2 mt-5" v-if="post"> 
         <!-- Para mostrar el mensaje si fallan las validaciones se usa primero esto -->
-        <o-field :message="fileError">
+        <o-field :message="fileError" :variant="fileError ? 'danger' : 'primary'">
             <!--
             Componente para subir Archivo
                 Le especificamos el modelo "file" que creamos
                 El atributo TAG nos activa el boton para poder utilizarlo con el proceso de upload
                     y asi nos muestra la ventana de dialogo
             -->
-            <o-upload v-model="file" :variant="fileError ? 'danger' : 'primary'">
+            <o-upload v-model="file">
                 <o-button tag="button-tag" variant="primary">
                     <o-icon icon="upload"></o-icon>
                     <span>Click to upload</span>
@@ -73,6 +73,24 @@
             Upload
         </o-button>
     </div>
+
+    <h3>Drag and Drop</h3>
+
+    <o-field :message="fileError" :variant="fileError ? 'danger' : 'primary'">
+        <o-upload v-model="filesDaD" multiple drag-drop>
+            <section>
+                <o-icon icon="upload"></o-icon>
+                <span>Drag and Drop area</span>
+            </section>
+        </o-upload>
+    </o-field>
+
+    <!-- Recorremos el archivo ya que puede contener multiples archivos (Asi mostramos el nombre del archivo en la interface al ser subido) --> 
+     <span v-for="(file, index) in filesDaD" :key="index">
+        {{ file.name }}
+     </span>
+
+
 </template>
 
 <script>
@@ -119,6 +137,7 @@
                 },
                 file: null, // Para almacenar archivos que se suban
                 fileError: '', // Para mostrar el error al subir el archivo
+                filesDaD: [],// Para la parte de subir multiples archivos
             }
         },
         methods:{
@@ -154,7 +173,7 @@
                     // Estamos Creando
                     // Este es el metodo es el que cambia que manda a llamar el formulario
                     // Ademas le pasamos el Slug que estamos actualizando que seria como el ID del registro
-                    this.$axios.post('/api/post/',this.form).then(res => {
+                    this.$axios.post('/api/post',this.form).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -251,6 +270,31 @@
                     this.fileError=error.response.data.message;
                     console.log(error);
                 });
+            }
+        },
+        // Se coloca afuera el apartado de Drag end Drop para que funcione
+        watch:{
+            // vamos a observar la propiedad (asi la leemos) que definimos antes
+            filesDaD: {
+                // Esta es logica de VUE y aqui vamos a obtener el valor
+                handler(val){ // Dentro de VAL tenemos el array para acceder al archivo
+                    this.fileError='';
+                    const formData = new FormData();
+                    // En este caso lo hacemos con el 'val' y asi hacemos referencia al ultimo elemento cargado
+                    formData.append('image', val[val.length-1]);
+                    this.$axios.post('/api/post/upload/'+this.post.id, formData, {
+                        headers: {
+                            'Content-Type' : 'multipart/form-data'
+                        }
+                    }).then((res) => {
+                        console.log(res);
+                    }).catch((error) => {
+                        this.fileError=error.response.data.message;
+                        console.log(error);
+                    });
+                },
+                // Para observar objetos o array
+                deep: true
             }
         }
     }
