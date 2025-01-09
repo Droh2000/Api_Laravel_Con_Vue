@@ -1,0 +1,33 @@
+Autenticacion para la Rest API
+
+Podemos proteger solo las rutas que nos interesa no nesesariamente todas
+Al ejecutar el comando de:
+    php artisan install:api
+No solo expuso el archivo api.php sino que tambien nos instala Sanctum que nos permite
+hacer la proteccion de las rutas y para eso tenemos varias maneras:
+    - SPA Authentication: La mas facil, esta nos ofrece una autenticacion mediante sesion
+                          Se recomiendo usarla donde la aplicacion SPA este en el mismo dominio
+                          que la aplicacion en Laravel (Front y backend tenemos en el mismo dominio)
+    - Api Tokens: Requiere mas configuraciones, donde se crea el token de autenticacion donde en base
+                  a un criterio que usualmente es usuario y contrasena se obtiene el usuario regisrado
+                  y a apartir de ahi creamos un token que retornamos al fronted, a medida que vayamos
+                  consumiento recursos que son protegidos se tiene que mandar el Token
+
+Entonces nos va a interesar proteger recursos de nuestra API y para eso usamos el esquema 
+de Sanctum, anteriormente usabamos Breeze para proteger las rutas pero esto es para la aplicacion
+web tradicional y Sanctum es para la Rest API
+
+En este caso vamos a empezar primero con el esquema de SPA y despues veremos el de Token
+
+SPA Autenticacion:
+    En la parte del app.php colocamos el middleware que nos permite esa proteccion, se requiere usar CQRS 
+    si tenemos otros dominios y en el archivo de bootstrap.js tenemos que habilitar la proteccion
+
+Este proyecto se creo nuevo y no tenemos un sistema de autenticacion pero el anterior al instalar breezer ya automaticamente 
+nos creo un modulo de login entonces si tubieramos ese esquema podriamos utilizar ese panel de autenticacion
+como no lo tenemos entonces vamos a crearlo nosotros para eso tenemos el paquete de "Laravel Fortify" o Breeze o crear una 
+funcion nosotros mismos (Lo importante es crear la sesion con el usuario autenticado)
+
+En este caso implementamos el login de manera manual y asi no instalamos paquetes que nos instalaran muchas otras dependencias
+Creamos el archivos como controlador:
+    php artisan make:controller LoginController
