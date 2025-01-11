@@ -22,5 +22,6 @@ Route::resource('post', PostController::class)->except(['create', 'edit']);
 Route::post('post/upload/{post}',[PostController::class, 'upload']);
 
 // Ruta de la autenticacion
-Route::post('user/login',[LoginController::class, 'login']);
+// La ruta tambien la registramos a nivel de Web para hacer otro tipo de pruebas
+Route::post('user/login',[LoginController::class, 'authenticate']);
 

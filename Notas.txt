@@ -31,3 +31,31 @@ funcion nosotros mismos (Lo importante es crear la sesion con el usuario autenti
 En este caso implementamos el login de manera manual y asi no instalamos paquetes que nos instalaran muchas otras dependencias
 Creamos el archivos como controlador:
     php artisan make:controller LoginController
+Para probar esto creamos un usuario con Tinker:
+    php artisan tinker
+
+        Creamos la instancia del usuario: 
+            $user = new App\Models\User()
+        Le establecemos la Data: 
+            $user->password=Hash::make('12345')
+            $user->email='admin@admin.com'
+            $user->name='admin'
+        Lo guardamos:
+            $user->save()
+
+Ahora implementamos el LoginController de manera manual pero hay cosas que como las implementamos al inicio
+no van a funcionar
+Si hacemos varias peticiones con postman:
+    - No vamos a poder establecer la sesion ya que en este caso dentro del IF, estamos accediendo a la session
+      esto tiene sentido porque las rutas de la API es para crear una API Rest y por definicion, una API REST
+      es sin estado (No es que sea un regla definitiva y no la podamos cambiar), el estado seria la sesion
+      Entonces POSTMAN nos da error porque la sesion no esta definida ya que no esta cargado ese milddware en las Rutas de la API
+Si intentamos consumir la ruta que creamos en "WEB.php":
+    - En postman veremos un error de 419, este error hace referencia al token CSRF que por defecto se encuentran activas para el modulo de 
+      Router de VUE que definimos antes, aparte de que tenemos otro problema en el que dentro del LoginController cuando no es valido se nos
+      redirecciona a la pagina anterior que en este caso no existe si es la pagina de WELCOME
+Como postman es solo para pruebas entonces vamos nosotros a consumir desde el codigo que seria el metodo de "Authentication" para
+ver si esta funcionando y luego consumir una ruta protegida como la de "middleware('auth:sanctum')" que esta en "API.php" es decir primero
+debemos de estar autenticados para emplear todo esto
+Para esto vamos a tener que emplear un Endpoint '/sanctum/csrf/cookie' que seria una sesion que esta simulando SANCTUM que inicializa la proteccion
+CSRF y de ahi ya podemos probar el LOGIN
