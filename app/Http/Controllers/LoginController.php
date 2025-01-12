@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
     // Con esta funcion verificamos si esta entrando o no al ejecutar el Enpoint 'api/user/login
     //dd();
-
     function authenticate(Request $request){
         // Aqui obtenemos las credenciales y aqui local aplicamos las validaciones
         // En un inicio al poner credenciales correctas obtenemos un error 500, el problema es que 
