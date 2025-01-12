@@ -59,3 +59,10 @@ ver si esta funcionando y luego consumir una ruta protegida como la de "middlewa
 debemos de estar autenticados para emplear todo esto
 Para esto vamos a tener que emplear un Endpoint '/sanctum/csrf/cookie' que seria una sesion que esta simulando SANCTUM que inicializa la proteccion
 CSRF y de ahi ya podemos probar el LOGIN
+
+Aqui usamos la proteccion con Sanctum especificamente agregandole el middleware, especificando que rutas queremos proteger
+
+Ahora vamos a utilizar los Tokens de autenticacion
+Vamos a crear un controlador para el usuario que lo vamos a hacer por cuestiones de tener organizado el proyecto
+ya que el LoginController lo podemos usar para otras situaciones pero en los Tokens ya tiene mas coneccion con el API REST
+Ademas que realizamos algunas otras  modificaciones
