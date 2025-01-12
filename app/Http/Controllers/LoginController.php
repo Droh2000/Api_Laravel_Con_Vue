@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 
+// Controlador que empleamos para hacer pruebas solamente con la auth SPA de Sactummn y las rutas.api
+// tambien probamos que lo podemos consumir desde las rutas de web.php
 class LoginController extends Controller
 {
     // Con esta funcion verificamos si esta entrando o no al ejecutar el Enpoint 'api/user/login

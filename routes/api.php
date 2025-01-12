@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Api\UserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -30,5 +31,8 @@ Route::post('post/upload/{post}',[PostController::class, 'upload']);
 
 // Ruta de la autenticacion
 // La ruta tambien la registramos a nivel de Web para hacer otro tipo de pruebas
-Route::post('user/login',[LoginController::class, 'authenticate']);
+// Route::post('user/login',[LoginController::class, 'authenticate']);
+
+// Autenticacion con Tokens
+Route::post('user/login',[UserController::class, 'login']);
 
