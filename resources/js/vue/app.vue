@@ -38,8 +38,8 @@ import axios from 'axios';
                 // Aqui podemos hacer la peticion al metodo del login
                 axios.post('/api/user/login',{
                     // Aqui definimos los datos que le estariamos pasando por postman
-                    'email': 'admin@admin.com',
-                    'password': '12345'
+                    'email': 'droh@droh.com',
+                    'password': 'qwerty'
                 }
                 ).then(response => {
                     // Imprimos el mensaje que nos da el servidor
@@ -50,9 +50,9 @@ import axios from 'axios';
             });
             // Despues de probar esta linea de codigo entonces ya estamos autenticados, por lo tanto podemos
             // hacer la siguiente peticion que en el archivo de "api.php" estsa protegido con "auth:sanctum"
-            axios.get('/api/user').then(response => {
+            /*axios.get('/api/user').then(response => {
                 console.log(response.data);
-            });
+            });*/
             // Asi a las demas rutas que que queramos proteger solo les agregamos al final en "->middleware('auth:sanctum');"
             // en la rutas de "api.php"
         },

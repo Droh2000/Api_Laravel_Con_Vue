@@ -8,15 +8,22 @@ use App\Http\Controllers\LoginController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+})->middleware('auth:sanctum'); // Esto es para proteger las rutas y solo sera posible el acceso despues de iniciar session
+// La proteccion de las rutas ya depende de nosotros que queremos proteger
+
+// Como desmostracion vamos a proteger algunas Rutas
+// Si no se inicio sesion obtendremos el error 401
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::resource('category', CategoryController::class)->except(['create', 'edit']);
+    Route::resource('post', PostController::class)->except(['create', 'edit']);
+});
+
 
 Route::get('category/all', [CategoryController::class, 'all']);
 Route::get('category/slug/{category:slug}', [CategoryController::class, 'slug']);
-Route::resource('category', CategoryController::class)->except(['create', 'edit']);
 
 Route::get('post/all', [PostController::class, 'all']);
 Route::get('post/slug/{slug}', [PostController::class, 'slug']);
-Route::resource('post', PostController::class)->except(['create', 'edit']);
 
 // Definimos la ruta para subir archivos
 Route::post('post/upload/{post}',[PostController::class, 'upload']);
