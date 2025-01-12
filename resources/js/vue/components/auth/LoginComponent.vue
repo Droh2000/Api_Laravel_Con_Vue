@@ -40,7 +40,7 @@ export default {
         }
     },
     methods: {
-
+        // Esta funcion es para limpiar los errores que se muestran en el formulario
         cleanErrorsForm() {
             this.errors.login = ''
         },
@@ -59,6 +59,8 @@ export default {
 
                     setTimeout(() => (window.location.href = '/'), 1500)
                     // this.disabledBotton = false
+                    
+                    // Mostramos la notificacion de exito
                     this.$oruga.notification.open({
                         message: 'Login success',
                         position: 'bottom-right',
@@ -67,6 +69,8 @@ export default {
                     })
 
                 }).catch(error => {
+                    // Capturamos los errores en el formulario
+                    // Aqui podriamos implementar condicionales para mostrar mejor el error si es un campo u otro
                     this.disabledBotton=false
                     this.errors.login = error.response.data
                 })
