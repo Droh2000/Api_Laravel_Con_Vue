@@ -4,8 +4,9 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 // Aqui creamos los componentes
 import List from './components/ListComponent.vue';
 import Save from './components/SaveComponent.vue';
+import Login from './components/auth/LoginComponent.vue';
 
-// Definimos las rutas
+// Definimos las rutas para cada componente
 const routes = [
     {
         name: 'list', // LE damos un nommbre para poder referenciarlo
@@ -18,7 +19,12 @@ const routes = [
         // que es el SLUG que sera opcional por eso simbolo de interrogacion por tanto debemos verificar si esta en la peticion o no
         path: '/save/:slug?', 
         component: Save
-    }
+    },
+    {
+        name: 'login',
+        path: '/login',
+        component: Login
+    },
 ];
 
 // Creamos las rutas

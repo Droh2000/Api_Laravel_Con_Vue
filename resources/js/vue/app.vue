@@ -34,7 +34,7 @@ import axios from 'axios';
         // Asi que tomamos cualquier componente "En este caso elegimo el de "App.vue" para hacer la prueba sin dar click a botones"
         mounted(){
             // Esta ruta ya viene por defecto
-            axios.get('sanctum/csrf-cookie').then(response => {
+            /*axios.get('sanctum/csrf-cookie').then(response => {
                 // Aqui podemos hacer la peticion al metodo del login
                 axios.post('/api/user/login',{
                     // Aqui definimos los datos que le estariamos pasando por postman
@@ -47,7 +47,7 @@ import axios from 'axios';
                 }).catch(error => {
                     console.log(error);
                 });
-            });
+            });*/
             // Despues de probar esta linea de codigo entonces ya estamos autenticados, por lo tanto podemos
             // hacer la siguiente peticion que en el archivo de "api.php" estsa protegido con "auth:sanctum"
             /*axios.get('/api/user').then(response => {
@@ -55,6 +55,8 @@ import axios from 'axios';
             });*/
             // Asi a las demas rutas que que queramos proteger solo les agregamos al final en "->middleware('auth:sanctum');"
             // en la rutas de "api.php"
+
+            // Este codigo se implemento en el componente de LoginComponent.vue
         },
         data() {
             return {
