@@ -30,11 +30,13 @@ class LoginController extends Controller
         // Como segunda cosa regresamos un error en caso de tener problemas
         // fails() -> Nos regresa True en caso de tener errores
         if($validator->fails()){
-            return $validator->errors();// Aqui no estamos regresando un JSON
+            //      return $validator->errors();// Aqui no estamos regresando un JSON
             // Otra forma de hacerlo es asi especificando la funcion JSON
             // Lo que pasa es que como la aplicacion se esta consumiendo en un Content Type de tipo Aplication JSON
             // la linea de codigo de arriva automaticamente laravel la convierte a JSON
-            //      return response()->json($validator->errors());
+            
+            // Se utilizo esta para especificarle el codigo de cuando error al ingresar mal las credenciales
+            return response()->json($validator->errors(), 422);
         }
 
         // Aqui las redirecciones no tienen mucho sentido, asi que lo siguiente es obtene la Data validada
@@ -70,7 +72,9 @@ class LoginController extends Controller
         */
 
         // El ultimo paso es cuando no conciden las credenciales
-        return response()->json('The username and/or password do not match');
+        // Aqui le especificamos el codigo del Status para asi poder capturar la excepcion desde el componente de VUE
+        // y asi mostrar los errores de validacion
+        return response()->json('The username and/or password do not match',422);
         // Esto seguira sin funcionar en Postman por eso vamos a probarlo de otra manera
     }
 }
