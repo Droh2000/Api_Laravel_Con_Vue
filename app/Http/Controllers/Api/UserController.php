@@ -62,12 +62,14 @@ class UserController extends Controller
     // Cerrar la session
     function logout(Request $request)
     {
-
+        // Eliminacion del Token
+        // Primero verificamos si es distinto de NULL y asi evitamos que los usuarios puedan ver errores
         if ($request->user()) {
 
+            // Tenemos varias formas de hacer lo mismo por eso unas lineas estan comentadas
             // auth()->user();
             // $request->user()->currentAccessToken()->delete();
-            $request->user()->tokens()->delete();
+            $request->user()->tokens()->delete(); // Con esta funcion eliminamos todos los tokens
         }
 
         session()->flush(); // Destruimos la session

@@ -8,6 +8,11 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Api\UserController;
 
 Route::get('/user', function (Request $request) {
+    // Para Eliminar el token
+    // Con el uuario (Autenticado) 
+    // Esto lo colcamos aqui para ver como se muestra la informacion en la consola en parte de Network
+    //dd($request->user()->currentAccessToken());
+
     return $request->user();
 })->middleware('auth:sanctum'); // Esto es para proteger las rutas y solo sera posible el acceso despues de iniciar session
 // La proteccion de las rutas ya depende de nosotros que queremos proteger
@@ -39,4 +44,4 @@ Route::post('user/login',[UserController::class, 'login']);
 // Cerrar la Sesion
 // Usualmente se usa la peticion de POST porque estamos en principio cambiando el esquema de datos
 // que en este caso es para destruir la sesion
-Route::post('user/logout',[UserController::class, 'logout']);
+Route::post('user/logout',[UserController::class, 'logout'])->middleware('auth:sanctum'); // Esto se podra hacer si esta la session iniciada

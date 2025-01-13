@@ -92,12 +92,18 @@ import axios from 'axios';
         methods: {
             logout(){
                 // Llamamos la ruta para cerrar sesion
+                // Para poder eliminar el Token le tenemos que pasar a la peticion el correspondiente token del usuario
+                // si no le pasaramos el token a la peticion seria por sesion
+                // Eso se hara mas adelante para tomar el Token de la sesion en general y no de manera estatica como vimos antes
+                
                 axios.post('/api/user/logout')
                 .then(() => {
                     // En este caso vamos a hacer una redireccion completa eso es por si tenemos activo
                     // todo el objeto de "window.Laravel" y asi borramos toda la informacion que tiene incluyendo el token
                     // Pero el Token puede estar almacenado de nuestro lado y que todabia exista
                     this.setCookieAuth("");
+                    // Esta lineas de codigo se pude comentar para ver el error con la funcion 'dd()' ya que al hacer la redireccion se elimina
+                    // el error de la consola
                     window.location.href = '/';
                 })
                 .catch(() => {
