@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // HAy que recordar que si hacemos pruebas y algo que no deberia de funcionar funciona es porque tenemos esta sesion activa 
         // de la SPA entonces hay que desactivarla
         // Esto lo que hace es activar una especie de sesion con la cookie en el objeto de session que esta en "UserController.php"
-        $middleware->statefulApi();
+        //$middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function(NotFoundHttpException $e, $request){

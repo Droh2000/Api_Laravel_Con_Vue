@@ -150,13 +150,35 @@ import { RouterLink } from 'vue-router';
                 },100);
             }, 
             listPage(){
+                /* 
+                    Enviar Tokens en las peticiones
+                    En este caso a rutas protegidas que definimos en "api.php" que estan encerradas en un "auth:sanctum"
+                    La configuracion que implementamos en el "vue.blade.php" de "Auth::check" para que funcione debemos tener activemo
+                    lo de "statefulApi()" en el "app.php" es decir la sesion con las cookies que es el esquema 
+                    de autenticacion con SPA, enrtonces la idea para saber si esta funcionando el Token
+                    debemos de comentar esa linea de codigo y trabajar solo con las Cookies, podemos emplear ambos esquemas de manera
+                    paralela pero pasa que si nos equivocamos en las cookies y tenemos la linea de codigo habilitada entonces siempre
+                    va a pasar la solicitud por tanto no sabemos si esta funcionando el esquema de las cookies o no 
+
+                    Para probar nos vamos a este componente que esta protegido 
+                    esto tambien lo podriamos implementar en el APP.vue
+                */
+                const config = {
+                    headers: {
+                        // El token lo tenemos en el objeto Window pero mas adelante lo usaremos desde las cookies
+                        Authorization: `Bearer ${this.$root.token}`
+                    }
+                    // Para que funcione la peticion 'this.$axios.get' le psamos este config
+                };
+
+
                 this.isLoading = true;
                 // Consumismo la ruta que configuramos en nuestro API de Laravel
                 // como son peticiones asyncronas tenemos que usar el Then para manejarlas por los Promesas
                 // Dentro del then recibimos la respuesta y despues definimos lo que queremos hacer con esa respuesta
                 //
                 // Pasamos parametros (?page=VALOR), el valor es la propiedad de paginacion que creamos
-                this.$axios.get('/api/post?page='+this.currentPage).then((res) => {
+                this.$axios.get('/api/post?page='+this.currentPage, config).then((res) => {
                     // Vemos los datos que tenemos
                     //console.log(res.data.data);
 
