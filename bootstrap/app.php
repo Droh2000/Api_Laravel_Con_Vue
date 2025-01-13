@@ -13,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // SPA Autenticacion
+        // SPA Autenticacion (Esta la podemos dejar activa despues de implementar con la de Tokens)
+        // HAy que recordar que si hacemos pruebas y algo que no deberia de funcionar funciona es porque tenemos esta sesion activa 
+        // de la SPA entonces hay que desactivarla
         $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {

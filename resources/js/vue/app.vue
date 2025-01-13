@@ -57,6 +57,22 @@ import axios from 'axios';
             // en la rutas de "api.php"
 
             // Este codigo se implemento en el componente de LoginComponent.vue
+
+            // Autenticacion con Tokens (ESto es una prueba para saber lo que tenemos que hacer)
+            // El Token viaja en los Headers
+            // Con esto podemos ver que el token lo podemos almacenar localment en el cliente como en la cookie o una BD local
+            // donde en la Cookie puede durar anios o ser destruida si la tenemos almcenada en el servidor
+            const config = {
+                headers: {
+                    // Al inicio se le coloca Bearer
+                    Authorization: 'Bearer TOKEN'
+                }
+            };
+
+            axios.get('/api/user', config).then(response => {
+                console.log(response.data);
+            });
+
         },
         data() {
             return {
