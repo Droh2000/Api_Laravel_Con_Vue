@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <!-- Cargamos los recursos de Vue -->
+    <!-- Cargamos los recursos de Vue  Se puede poner al utimo para asi poder usar el objeto que creamos con "window"-->
     @vite(['resources/js/vue/main.js'])
-
 </head>
 <body>
     <!-- 

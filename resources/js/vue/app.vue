@@ -62,22 +62,38 @@ import axios from 'axios';
             // El Token viaja en los Headers
             // Con esto podemos ver que el token lo podemos almacenar localment en el cliente como en la cookie o una BD local
             // donde en la Cookie puede durar anios o ser destruida si la tenemos almcenada en el servidor
-            const config = {
+            /*const config = {
                 headers: {
                     // Al inicio se le coloca Bearer
-                    Authorization: 'Bearer TOKEN'
+                    Authorization: 'Bearer Example_TOKEN'
                 }
             };
 
             axios.get('/api/user', config).then(response => {
                 console.log(response.data);
-            });
+            });*/
 
+            // Para consumir los datos que especificamos en 'vue.blade.php' para saber si esta autenticado desde la aplicacion en VUE
+            // Lo que vamos a hacer es que ya no nos vamos a comunicar directamente con el servidor enviando peticiones 
+            // sino que vamos a consumir lo de 'vue.blade.php'
+            if(window.Laravel.isLoggedIn){
+                // Rellenamos los campos del objeto
+                this.isLoggedIn=true;
+                this.user=window.Laravel.user;
+                this.token=window.Laravel.token;
+                // Este seria un primer enfoque que podemos usar
+            }
         },
         data() {
             return {
+                // Aqui vamos a crear un objeto que podamos usar en VUE (El que creamos con el objeto Windows)
+                // Este lo podemos guardar de manera local a este componente
+                // Empezamos colocando el estado inicial de todos los campos
+                isLoggedIn: false,
+                user: '',
+                token: '',
                  /*
-                Migrar Rutas a App.vue
+                    Migrar Rutas a App.vue
                         Asi tenemos todas las rutas en un solo lugar y no regadas por toda la app
                         Como es una app pequena se puede hacer en el componente padre y no hay necesidad de
                         hacerlo en un sistema de manejador de estado
