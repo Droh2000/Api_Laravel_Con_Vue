@@ -10,6 +10,36 @@
 
 </head>
 <body>
+    <!-- 
+        Para compartirle el TOKEN que almacenamos en la Sesion se lo compartimos por JavaScript
+        Esto lo podemos colocar en cualquier parte 
+        
+        Aqui preguntamos si estamos autenticados
+    -->
+    @if(Auth::check())
+        <script>
+            // Para presentar un Objeto y que no se convierta a un HTML le ponemos los !!
+            // Para compartirsela a VUE una forma es estableciendole el objeto windows donde nos creamos una variable personalizada
+            // por nosotros y la igualamos a este objeto
+            window.Laravel = {!!
+                // Le pasamos los parametros que queremos compartir
+                json_encode([
+                    'isLoggedIn' => true,// Aqui estamos seguro que esta autenticado por la comprobacion 'check()' que paso la condicional
+                    'user' => Auth::user(),    // Le pasamos todo el usuario
+                    'token' => session('token'),// Aqui le pasamos el token y como ya lo tenemos almacenado en la sesion por la configuracion en "UserController.php"
+                ])
+            !!}
+        </script>
+    @else
+        <script>
+            window.Laravel = {!!
+                json_encode([
+                    'isLoggedIn' => false
+                ])
+            !!}
+        </script>
+    @endif
+
     <!-- Aqui es donde se va a renderizar nuestra aplicacion en VUE 
         Despues de instalarle el tailwindcss le agregamos el cotainr y para centrar la app
     -->

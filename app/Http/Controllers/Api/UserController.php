@@ -39,7 +39,11 @@ class UserController extends Controller
             // plainTextToken seria lo que vamos a compartir, esta es una propieadad para compartir el token de manera segura
             //  asi podemos acceder a los modulos protegidods
             $token = auth()->user()->createToken('myapptoken')->plainTextToken;
+            
+            // Le establecemos en la sesion el token creado (Almacenamos el token en la sesion de Laravel)
             session()->put('token', $token);
+            // Esto se lo tenemos que pasar a VUE (Comunicando al servidor con el cliente)
+            // para eso tenemos el intermediario que vendira siendo nuestra pagina HTML que en este caso es 'vue.blade.php'
 
             // Regresamos en forma de JSON los datos
             return response()->json(
