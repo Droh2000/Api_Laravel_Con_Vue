@@ -3,6 +3,11 @@
         <!-- Este es un componente -->
         <!-- <list/> -->
 
+        <!-- Esto es para cerrar la session -->
+         <o-button variant="danger" @click='logout'>
+            Close Sesion
+         </o-button>
+
         <!-- 
             Despues de emplear las rutas ahora el componente no se debe poner directamente
             sino que se tiene que emplear la navegacion
@@ -82,6 +87,22 @@ import axios from 'axios';
                 this.user=window.Laravel.user;
                 this.token=window.Laravel.token;
                 // Este seria un primer enfoque que podemos usar
+            }
+        },
+        methods: {
+            logout(){
+                // Llamamos la ruta para cerrar sesion
+                axios.post('/api/user/logout')
+                .then(() => {
+                    // En este caso vamos a hacer una redireccion completa eso es por si tenemos activo
+                    // todo el objeto de "window.Laravel" y asi borramos toda la informacion que tiene incluyendo el token
+                    // Pero el Token puede estar almacenado de nuestro lado y que todabia exista
+                    this.setCookieAuth("");
+                    window.location.href = '/';
+                })
+                .catch(() => {
+                    window.location.href = '/';
+                })
             }
         },
         data() {

@@ -36,3 +36,7 @@ Route::post('post/upload/{post}',[PostController::class, 'upload']);
 // Autenticacion con Tokens
 Route::post('user/login',[UserController::class, 'login']);
 
+// Cerrar la Sesion
+// Usualmente se usa la peticion de POST porque estamos en principio cambiando el esquema de datos
+// que en este caso es para destruir la sesion
+Route::post('user/logout',[UserController::class, 'logout']);

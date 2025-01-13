@@ -59,6 +59,7 @@ class UserController extends Controller
 
     }
 
+    // Cerrar la session
     function logout(Request $request)
     {
 
@@ -69,8 +70,10 @@ class UserController extends Controller
             $request->user()->tokens()->delete();
         }
 
-        session()->flush();
+        session()->flush(); // Destruimos la session
+        // Aqui tambien podriamos colocar la parte de destruir las cookies 
         return response()->json('ok');
+        // Despues de esta implementacion creamos la ruta en "api.php"
     }
 
     function checkToken() {
