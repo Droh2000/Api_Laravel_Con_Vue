@@ -93,6 +93,41 @@ import axios from 'axios';
 
             // Esto es para verificar si tenemos informacion en la Cookie            
             //console.log(this.$cookies.get('auth'));
+
+            /*
+                Primero verificamos en el condicional si existe entonces le damos prioridad
+                a lo que haya ahi por si hay una actualizacion del lado del servidor o del usuario y
+                aprovechamos esos datos para establecerlos cuando realmente los utilizamos y en la cookier
+                Como es data que viene del servidor entonces cualquier actualizacion que venga de ahi la 
+                podemos aprovechar para actualizar el estado, sobre todo en la parte del usuario por si 
+                actualizo sus datos en otra parte 
+                
+                Aqui se mejoro la condicion porque si no existe el "isLogged In" nos dara error
+            */
+            if (window.Laravel && window.Laravel.isLoggedIn) {
+                this.isLoggedIn = true
+                this.user = window.Laravel.user
+                this.token = window.Laravel.token
+
+                this.$root.setCookieAuth({
+                    isLoggedIn: this.isLoggedIn,
+                    token: this.token,
+                    user: this.user,
+                })
+            
+            // Si no esta definido entonces no vamos a la cookie, consumimos la cookie, si exite que es el valor
+            // que tenemos en el "Logout" entonces hacemos lo mismo que hacemos arriba
+            } else {
+                const auth = this.$cookies.get('auth')// Obtenemos la cookie que es nuestro almacenamiento de larga duracion
+
+                // Si es valida significa que tenemos algo y por la implementacion que tenemos esto 
+                // solo nos regresa algo cuando estas autenticados
+                if (auth) {
+                    this.isLoggedIn = true
+                    this.user = auth.user
+                    this.token = auth.token
+                }
+            }
         },
         methods: {
             // Este metodo lo ponemos en el componente Padre para tener mas centralizado las cosas
