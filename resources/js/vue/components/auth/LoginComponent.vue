@@ -19,9 +19,22 @@
 </template>
 <script>
 export default {
+    // Esta funcion la colocamos aqui porque es parte del ciclo del vida del componente
+    // es para que si el usuario estaa autenticado no pueda ir a la pagina de Login poniendo la ruta directamente sino que solo se pueda Cerrando Sesion
+    // Podriamos usar VUE router pero vamos a usar una validacion Local
     created() {
-
-        if (this.$root.isLoggedIn) {
+        // Cuando se crea la aplicacion podemos hacer alguna verificaciones
+        // Aqui verificamos por el objeto que tenemos en el "App.vue" que esta dentro de la condicional
+        // ya que este es el componente raiz que definimos en el main.js que es el primero que se carga y despues de ahi se cargan el resto de los componentes con el Router-view
+        // Entonces podemos acceder a eses ccomponente y al final a sus metodos y propiedades
+        // usamos $root para acceder a variables propias del Framework o los plugins que instalamos
+        // y ponemos el nombre del metodo o propiedad que queramos acceder
+        if (this.$root.isLoggedIn) { // Verificamos si estamos autenticados
+            // Podriamos hacer una carga de toda la pagina pero en este caso no hace falta asi que en lugar de eso
+            // vamos a hacer una redireccion local empleando el objeto del "router"
+            // Usamos "push" ya que las rutas se manejan como un historial donde se van colocando como en una cola
+            // Donde la mas arriba es la que se estaria visualizando que la colocamos aqui encima de la pila
+            // Como empleamos nombres a nuestras Rutas en el "router.js" queremos ir a la de "list"
             this.$router.push({ name: 'list' })
         }
     },
@@ -50,13 +63,28 @@ export default {
             this.disabledBotton=true
             axios.get('sanctum/csrf-cookie').then(response => {
                 axios.post('/api/user/login', this.form).then(response => {
-
+                    
                     this.$root.setCookieAuth({
                         isLoggedIn: response.data.isLoggedIn,
                         token: response.data.token,
                         user: response.data.user,
                     })
 
+                    /*
+                        Una vez iniciada la sesion deberiamos de redireccional pero tambien queremos mostrar el mensaje de Oruga
+                        Lo que vamos a hacer aqui (VUE solo cambia la parte donde se esta renderizando en DIV id=app)
+                        y toda la demas parte del HTML no se va actualizar, esto podriamos sacarlo como ventaja en el donde
+                        tenemos en el "vue.blade.php" laravel tiene que llamar lo del condicional "if(Auth::check)"
+
+                        Cuando se autentica tenemos que recargar toda la pagina y no solo de una porcion por tanto no podemos
+                        emplear la navegacion de VUE router porque no se cargaria lo de "vue.blade.php"
+                        Por tanto aqui tenemos que hacer una redireccion empleando JS nativo
+                        En 'window.location.href' indicamos que queremos ir hacia la pagina principal de la aplicacion
+                        La redireccion la encerramos en "setTimeout" para que se espere 1 segundo y medio y asi alcanzar a mostrar la 
+                        notificacion
+                        Tambien por proteccion podemos en ese lapso de tiempo bloquear el boton 
+                        Con esto recargamos la pagina y asi Laravel va a crear el objeto que definimos en 'vue.blade.js'
+                    */
                     setTimeout(() => (window.location.href = '/'), 1500)
                     // this.disabledBotton = false
                     
