@@ -46,9 +46,10 @@ class UserController extends Controller
             // para eso tenemos el intermediario que vendira siendo nuestra pagina HTML que en este caso es 'vue.blade.php'
 
             // Regresamos en forma de JSON los datos
+            // Aqui vamos a regresar mas informacion del inicio de sesion y no solo el token
             return response()->json(
                 [
-                    'isLoggedIn' => true,
+                    'isLoggedIn' => true, // Aqui ya estamos autenticados
                     'token' => $token,
                     'user' => auth()->user(),
                 ]

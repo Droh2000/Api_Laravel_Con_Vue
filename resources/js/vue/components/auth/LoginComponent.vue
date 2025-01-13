@@ -63,7 +63,8 @@ export default {
             this.disabledBotton=true
             axios.get('sanctum/csrf-cookie').then(response => {
                 axios.post('/api/user/login', this.form).then(response => {
-                    
+                    // Aqui le establecemos los datos que requiere para establecerle la cookie
+                    // Le pasamos el objeto completo
                     this.$root.setCookieAuth({
                         isLoggedIn: response.data.isLoggedIn,
                         token: response.data.token,
@@ -85,7 +86,7 @@ export default {
                         Tambien por proteccion podemos en ese lapso de tiempo bloquear el boton 
                         Con esto recargamos la pagina y asi Laravel va a crear el objeto que definimos en 'vue.blade.js'
                     */
-                    setTimeout(() => (window.location.href = '/'), 1500)
+                    setTimeout(() => (window.location.href = '/'), 1500); //  Despues de la implementacion de las cookies ya no hace flata hacer una recarga completa porque no empleamos el de la session
                     // this.disabledBotton = false
                     
                     // Mostramos la notificacion de exito
@@ -94,7 +95,7 @@ export default {
                         position: 'bottom-right',
                         duration: 1000,
                         closable: true
-                    })
+                    });
 
                 }).catch(error => {
                     // Capturamos los errores en el formulario

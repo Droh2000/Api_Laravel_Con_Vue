@@ -81,15 +81,28 @@ import axios from 'axios';
             // Para consumir los datos que especificamos en 'vue.blade.php' para saber si esta autenticado desde la aplicacion en VUE
             // Lo que vamos a hacer es que ya no nos vamos a comunicar directamente con el servidor enviando peticiones 
             // sino que vamos a consumir lo de 'vue.blade.php'
-            if(window.Laravel.isLoggedIn){
+            /*if(window.Laravel.isLoggedIn){
                 // Rellenamos los campos del objeto
                 this.isLoggedIn=true;
                 this.user=window.Laravel.user;
                 this.token=window.Laravel.token;
                 // Este seria un primer enfoque que podemos usar
             }
+            Esto se comento porque no lo vamos a consumir aqui    
+            */
+
+            // Esto es para verificar si tenemos informacion en la Cookie            
+            //console.log(this.$cookies.get('auth'));
         },
         methods: {
+            // Este metodo lo ponemos en el componente Padre para tener mas centralizado las cosas
+            // Como en el "UserController" ya le modificamos para que obtenga mas informacion al iniciar sesion
+            // creamos esta funcion para recibir esos datos
+            setCookieAuth(data){
+                // Asi tenemos centralizado la operacion de la Cookie
+                // Con set le pasamos por Clave y valor
+                this.$cookies.set('auth', data);
+            },
             logout(){
                 // Llamamos la ruta para cerrar sesion
                 // Para poder eliminar el Token le tenemos que pasar a la peticion el correspondiente token del usuario
