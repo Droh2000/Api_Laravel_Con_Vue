@@ -114,7 +114,7 @@
         </o-pagination>
 </template>
 <script>
-import { RouterLink } from 'vue-router';
+    import { RouterLink } from 'vue-router';
 
 
     export default {
@@ -171,7 +171,6 @@ import { RouterLink } from 'vue-router';
                     // Para que funcione la peticion 'this.$axios.get' le psamos este config
                 };
 
-
                 this.isLoading = true;
                 // Consumismo la ruta que configuramos en nuestro API de Laravel
                 // como son peticiones asyncronas tenemos que usar el Then para manejarlas por los Promesas
@@ -191,10 +190,19 @@ import { RouterLink } from 'vue-router';
             },
             //deletePost(row){
             deletePost(){ // despues de creado el modal ya no se le pasa el row y se usa el "deletePostRow"
+
+                // Como es un recurso protegido le tenemos que pasar el header con el TOKEN 
+                // Asi se lo debemos de suministrar a los demas recursos que tengamos protegidos
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.$root.token}`
+                    }
+                };
+
                 // Para llamar al metodo de eliminar
                 // En este para pasarle el valor a la ruta no es tan directo porque tenemos un sistema de ROW creado por ORUGA
                 // para encontrar la ruta podriamos colocarle un console.log y asi agregar un punto de interrupcion
-                this.$axios.delete('/api/post/'+this.deletePostRow.row.id);
+                this.$axios.delete('/api/post/'+this.deletePostRow.row.id, config);
                 // Aqui eliminamos en la BD pero tambien tenemos los datos almacenados en el arreglo "posts" asi que tenemos que actualizar eso
                 // tenemos que eliminar el elemento del arrray (Esta operacion tiene que ser reconocida por el modo reactivo de VUE)
                 // Aqui eliminamos por la ubicacion por eso usamos el index

@@ -10,8 +10,10 @@
                 <o-field label="Password" :variant="errors.login ? 'danger' : 'primary'" :message="errors.login">
                     <o-input v-model="form.password" type="password"></o-input>
                 </o-field>
-                <!-- Al boton le indicamos con "native-type" para que pueda interceptar el submit -->
-                <o-button :disabled="disabledBotton" variant="primary" native-type="submit" class="float-right">Send</o-button>
+                <!-- Al boton le indicamos con "native-type" para que pueda interceptar el submit 
+                    Le agregamos la parte de disabledBotton para activar o desactivar el boton 
+                -->
+                <o-button @click="submit" :disabled="disabledBotton" variant="primary" native-type="submit" class="float-right">Send</o-button>
             </form>
         </div>
     </div>
@@ -40,7 +42,7 @@ export default {
     },
     data() {
         return {
-            disabledBotton:false,
+            disabledBotton:false, // Ponemos esto para que el usuario no pueda iniciar sesion varias veses
             form: {
                 // Estos son los datos que ya estan registrados en la BD
                 // Los datos de ingreso los ponemos aqui para no estar escribiendolos
@@ -69,7 +71,7 @@ export default {
                         isLoggedIn: response.data.isLoggedIn,
                         token: response.data.token,
                         user: response.data.user,
-                    })
+                    });
 
                     /*
                         Una vez iniciada la sesion deberiamos de redireccional pero tambien queremos mostrar el mensaje de Oruga
@@ -100,8 +102,8 @@ export default {
                 }).catch(error => {
                     // Capturamos los errores en el formulario
                     // Aqui podriamos implementar condicionales para mostrar mejor el error si es un campo u otro
-                    this.disabledBotton=false
-                    this.errors.login = error.response.data
+                    this.disabledBotton=false;
+                    this.errors.login = error.response.data;
                 })
             })
 

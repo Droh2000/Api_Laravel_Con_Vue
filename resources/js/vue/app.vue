@@ -3,11 +3,84 @@
         <!-- Este es un componente -->
         <!-- <list/> -->
 
-        <!-- Esto es para cerrar la session -->
+        <nav class='bg-white border-b border-gray'>
+            <header class='max-w-7xl px-4 sm:px-6 lg:px-8'>
+                <div class='flex justify-between'>
+                    <div class='flex items-center'>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="40"
+                            height="35"
+                            viewBox="0 0 262 227"
+                            >
+                            <g id="Vue.js_logo_strokes" fill="none" fill-rule="evenodd">
+                                <g id="Path-2">
+                                <polyline
+                                    class="outer"
+                                    stroke="#4B8"
+                                    stroke-width="46"
+                                    points="12.19 -24.031 131 181 250.351 -26.016"
+                                />
+                                </g>
+                                <g id="Path-3" transform="translate(52)">
+                                <polyline
+                                    class="inner"
+                                    stroke="#354"
+                                    stroke-width="42"
+                                    points="15.797 -14.056 79 94 142.83 -17.863"
+                                />
+                                </g>
+                            </g>
+                            </svg>
+                    </div>
+                    <div class='max-w-7xl mx-auto py-4 px-4 sm:px-6'>
+                        <!--
+                            Enlaces de navegacion que solo deben aparecer si estamos autenticados
+                            esa condicion se la agregamos al final en "v-if" evaluando la propiedad
+                            que nos indica si estamos o no autenticados
+                        -->
+                        <router-link :to="{'name': 'login'}" class='inline-flex uppercase border-b-2 text-sm-leading-5 mx-3 px-4 py-1 text-gray-600 text-center font-bold hover:text-gray-900 hover:border-gray-700 hover:-translate-y-1 durarion-150 transition-all' v-if="!$root.isLoggedIn">
+                            Login
+                        </router-link>
+                    
+                        <router-link :to="{'name': 'list'}" class='inline-flex uppercase border-b-2 text-sm-leading-5 mx-3 px-4 py-1 text-gray-600 text-center font-bold hover:text-gray-900 hover:border-gray-700 hover:-translate-y-1 durarion-150 transition-all' v-if="$root.isLoggedIn">
+                            List
+                        </router-link>
+                        <!-- 
+                            Este es el boton para cerrar session y solo lo mostramos si esta iniciada la sesion
+                        -->
+                        <o-button
+                            v-if="$root.isLoggedIn"
+                            variant="danger"
+                            @click="logout"
+                        >
+                            Logout
+                        </o-button>
+                    </div>    
+                    <!-- Esto es para mostrar el icono de un Avatar 
+                        Solo lo vamos a mostrar si el usuario esta autenticado
+                        De las mismas propieades obtenemos el nombre del usuario
+                    -->
+                    <div class='flex flex-col items-center py-2' v-if='$root.isLoggedIn'>   
+                        <div class='rounded-full w-9 h-9 bg-blue-300 text-center p-1 font-bold'>
+                            <!-- Del nombre solo obtenemos dde los dos primeros caraccteres 
+                                y abajo mostramos el nombre completo
+                             -->
+                            {{ $root.user.name.substr(0,2).toUpperCase() }}
+                        </div>
+                        <p>{{ $root.user.name }}</p>
+                    </div>
+                </div>
+            </header>
+
+        </nav>
+
+        <!-- Esto es para cerrar la session 
          <o-button variant="danger" @click='logout'>
             Close Sesion
          </o-button>
-
+        -->
         <!-- 
             Despues de emplear las rutas ahora el componente no se debe poner directamente
             sino que se tiene que emplear la navegacion
@@ -20,7 +93,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+    import axios from 'axios';
 
     // Despues de implementar las rutas ya no hace falta esto
     /*
@@ -92,7 +165,7 @@ import axios from 'axios';
             */
 
             // Esto es para verificar si tenemos informacion en la Cookie            
-            //console.log(this.$cookies.get('auth'));
+            // console.log(this.$cookies.get('auth'));
 
             /*
                 Primero verificamos en el condicional si existe entonces le damos prioridad
@@ -126,6 +199,15 @@ import axios from 'axios';
                     this.isLoggedIn = true
                     this.user = auth.user
                     this.token = auth.token
+                    // verification token
+                    /*this.$axios.post(this.$root.urls.tokenCheck, {
+                        token: auth.token
+                    }).then(() => {
+                        console.log('tokenCheck')
+                    }).catch(() => {
+                        this.setCookieAuth('');
+                        window.location.href = '/login'
+                    })*/
                 }
             }
         },
@@ -144,7 +226,14 @@ import axios from 'axios';
                 // si no le pasaramos el token a la peticion seria por sesion
                 // Eso se hara mas adelante para tomar el Token de la sesion en general y no de manera estatica como vimos antes
                 
-                axios.post('/api/user/logout')
+                // Debemos configurar el Header con el Token
+                const config = {
+                    headers: {
+                        Authorization: 'Bearer ' + this.token
+                    }
+                }
+
+                axios.post('/api/user/logout', null, config)
                 .then(() => {
                     // En este caso vamos a hacer una redireccion completa eso es por si tenemos activo
                     // todo el objeto de "window.Laravel" y asi borramos toda la informacion que tiene incluyendo el token
@@ -152,10 +241,10 @@ import axios from 'axios';
                     this.setCookieAuth("");
                     // Esta lineas de codigo se pude comentar para ver el error con la funcion 'dd()' ya que al hacer la redireccion se elimina
                     // el error de la consola
-                    window.location.href = '/';
+                    window.location.href = '/login';
                 })
                 .catch(() => {
-                    window.location.href = '/';
+                    window.location.href = '/login';
                 })
             }
         },

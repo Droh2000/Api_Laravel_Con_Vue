@@ -41,7 +41,7 @@
         <o-field label="Category" :variant="errors.category_id ? 'danger' : 'primary'" :message="errors.category_id">
             <o-select v-model="form.category_id" placeholder="Select a Option">
                 <!-- Usamos el listado de categorias que obtenemos con Axios y las mostramos aqui -->
-                <option></option>
+                <option value=""></option>
                 <option v-for="c in  categories" v-bind:key="c.id" :value="c.id">{{ c.title }}</option>
             </o-select>
         </o-field>
@@ -110,6 +110,8 @@
                 this.initPost();
             }
 
+            //console.log(this.$cookies.get('auth'));
+
             // Esto se ejecuta cuando carga el componente
             this.getCategory()
         },
@@ -144,7 +146,13 @@
             // Para obtener la categoria y mostrar en el campo de "Category"
             // Esta no es asyncrona porque no nos insteresa esperar a termine ya que abajo no hay mas instrucciones a ejecutar
             getCategory(){
-                this.$axios.get(this.$root.urls.getPostCategories).then((res)=>{
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.$root.token}`
+                    }
+                };
+
+                this.$axios.get(this.$root.urls.getPostCategories, config).then((res)=>{
                     this.categories = res.data;
                 });
             },
@@ -167,13 +175,22 @@
                 this.errors.posted='';
             },
             send(){
+
+                // Como es un recurso protegido le tenemos que pasar el header con el TOKEN 
+                // Asi se lo debemos de suministrar a los demas recursos que tengamos protegidos
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.$root.token}`
+                    }
+                };
+
                 this.cleanErrorsForm();
                 // Vamos a verificar si estamos editando o creando
                 if(this.post === ''){
                     // Estamos Creando
                     // Este es el metodo es el que cambia que manda a llamar el formulario
                     // Ademas le pasamos el Slug que estamos actualizando que seria como el ID del registro
-                    this.$axios.post(this.$root.urls.postPost,this.form).then(res => {
+                    this.$axios.post(this.$root.urls.postPost,this.form,config).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -211,7 +228,7 @@
                 }else{
                     // Estamos Editando
                     // Este es el metodo que manda a llamar el formulario
-                    this.$axios.patch(this.$root.urls.postPatch+this.post.id,this.form).then(res => {
+                    this.$axios.patch(this.$root.urls.postPatch+this.post.id,this.form,config).then(res => {
                         console.log(res);
 
                         // Mensaje que se muestra cuando la accion se realizo
@@ -261,7 +278,8 @@
                 this.$axios.post(this.$root.urls.postUpload+this.post.id, formData, {
                     // Especificamos las opciones de envio
                     headers: {
-                        'Content-Type' : 'multipart/form-data' // Aqui especificamos que es de formulario
+                        'Content-Type' : 'multipart/form-data', // Aqui especificamos que es de formulario
+                        Authorization: `Bearer ${this.$root.token}`
                     }
                 // El Then es cuando nos regrese todo OK
                 }).then((res) => {
