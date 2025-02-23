@@ -24,7 +24,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('post', PostController::class)->except(['create', 'edit']);
 });
 
-Route::get('category/all', [CategoryController::class, 'all']);
+Route::get('category/all', [CategoryController::class, 'all']); // Esto no da error 404 si no queremos que nos salga hay que poner estas lineas de codigo arriba del middleware el problema es que el usuario sin iniciar sesion tendra acceso
 Route::get('category/slug/{category:slug}', [CategoryController::class, 'slug']);
 
 Route::get('post/all', [PostController::class, 'all']);
