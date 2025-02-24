@@ -16,7 +16,14 @@ class BlogController extends Controller
     }
 
     // Aqui como argumentos lo mejor seria regresar solo el ID para que sea mas eficiente
-    function show(Post $post){
+    // por tanto el uso del POST aqui no tiene sentido, la razon del argumento en la funcion es que 
+    // estamos inyectando para traducir el ID (que es lo que empleamos en la URL) y se traduce automaticamente a POST
+    // para buscar por ese ID (De manera automatica ejecuta "Post::find(1)")
+    // Como estamos por la cache no tiene sentido ejecutar operaciones a la BD asi que cambiemos este POST por el ID o el Slug
+    // En el caso que no este definido en el cache si empleamos el POST pero en este caso solo buscamos una sola vez con el post
+    // Para implementar este cambio la ruta en "web.php"
+    //  function show(Post $post){
+    function show(int $id){
 
         // Implementacion del Cache
         // Preguntamos por la Key si existe (En caso que no tomara los datos del almacenamiento de la BD)
@@ -41,8 +48,14 @@ class BlogController extends Controller
         // Esto se tendria que implementar desde la opcion de actualizar el registro con el SLUG y con la Key, se elimina la cache y se vuelve a guardar el contenido
         // Esto lo implementamos en le PostController.php
 
-        // Implementacion usando el metodo del rememberForever
-        return Cache::rememberForever('post_show_'.$post->id, function () use($post){
+        // Implementacion usando el metodo del rememberForever (La logica interna de la funcion solo se ejecuta cuando no existen los datos en la cache)
+        return Cache::rememberForever('post_show_'.$id, function () use($id){
+
+            // Esto se va a hacer solo cuando no exista en cache sino retorna por defecto ya la almacenado
+            // Aqui tambien podemos implementar varias cosas de seguridad como el 404
+            // En este caso con el metodo de with() que es de Eloquent indicamos que nos extraiga la relacion de la FK (Es "category" porque asi se llama el metodo en el archivo Post.php)
+            $post = Post::with('category')->find($id);
+
             // Aqui ejecutamos la operacion a la base de datos
             // Por defecto la variable $post abajo nos daba error para estos casos en el que queremos emplear argumentos de funciones dentro de este Callback
             // ya que por defecto no lo toma entonces tenemos que colocar arriba despues de "function ()" el 'use()' y dentro le colocamos los argumentos

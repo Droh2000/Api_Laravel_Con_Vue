@@ -23,3 +23,15 @@ Route::get('/{n1?}/{n2?}/{n3?}', function () {
 });
 
 Route::post('/user/login',[LoginController::class, 'authenticate']);
+
+// Estas lineas se agregaron por la implementacion del cache sin el uso del POST 
+// pero en si esta logica es del proyecto original de Laravel solo que el tipo del curso no especifico en ningun momoento cual uso
+// Asi que se opto por seguir usando donde se creo la API
+// Rutas para el Blog que es donde implementamos los componentes
+Route::group(['prefix' => 'blog'], function() {
+    Route::get('', [BlogController::class, 'index'])->name('blog.index');
+    //Route::get('detail/{post}', [BlogController::class, 'show'])->name('blog.show');
+
+    // Uso del ID en lugar del POST
+    Route::get('detail/{id}', [BlogController::class, 'show'])->name('blog.show');
+});
