@@ -6,6 +6,11 @@ use Illuminate\Support\Str;
     Por defecto el cache que se emplea es el de la Base de datos, tambien lo que es uso de Redis
     o Memcache se requeire instalacion adicional
     Aqui definimos el tipo de cache que estamos utilizando
+
+    Aqui podemos cambiar el motor por defecto que seria por los que vienen en Supported drivers
+    No tiene sentido usar este de "database" ya que se haria un cuello de botella (Si verificamos nuestra Base de datos se crean dos tablas de cache)
+    
+    La varaible de Entorno se cambia en .env donde tambien viene por defecto la de base de datos
 */
 
 return [

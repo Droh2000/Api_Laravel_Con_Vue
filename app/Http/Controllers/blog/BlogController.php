@@ -22,7 +22,7 @@ class BlogController extends Controller
         // Preguntamos por la Key si existe (En caso que no tomara los datos del almacenamiento de la BD)
         // La key debe ser unica porlo que podria ser el SLUG o un ID, entre las comillas le colocamos un prefijo
         // (No pusimos el SLUG porque se puede repetir)
-        if(Cache::has('post_show_'.$post->id)){
+        /*if(Cache::has('post_show_'.$post->id)){
             // Regresamos lo que tengamos en la cache (Le pasamos la misma key)
             return Cache::get('post_show_'.$post->id);
         }else{
@@ -35,11 +35,20 @@ class BlogController extends Controller
             // Almacenamos el contenido en la cache (Especificandole la Key y el contenido)
             Cache::put('post_show_'.$post->id, $cacheView);
             return $cacheView; // Regresamos el contenido para mostrarselo al usuaario
-        }
+        }*/
 
         // La desventaja de esto es que si actualizamos la publicacion del cache estos cambios no afectaran a la cache
         // Esto se tendria que implementar desde la opcion de actualizar el registro con el SLUG y con la Key, se elimina la cache y se vuelve a guardar el contenido
         // Esto lo implementamos en le PostController.php
+
+        // Implementacion usando el metodo del rememberForever
+        return Cache::rememberForever('post_show_'.$post->id, function () use($post){
+            // Aqui ejecutamos la operacion a la base de datos
+            // Por defecto la variable $post abajo nos daba error para estos casos en el que queremos emplear argumentos de funciones dentro de este Callback
+            // ya que por defecto no lo toma entonces tenemos que colocar arriba despues de "function ()" el 'use()' y dentro le colocamos los argumentos
+            // Asi mapeamos el argumento
+            return view('blog.show', ['post'=>$post])->render();
+        });
 
         //return view('blog.show', ['post'=>$post]);
     }
