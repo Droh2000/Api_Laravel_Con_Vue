@@ -110,3 +110,14 @@ El ejercicio que vamos a hacer:
         Si no tenemos nada es ir a la vista y con esto vamos a la BD para buscar el contenido, procesar la vista
         y luego devolverla
         (Esto se implemento en el BlogController)
+
+    El ejercicio le correspondia aplicarlo en el Proyecto de laravel de fronted
+
+Esta practica si va en el proyecto de laravel de Rest Api
+    * Con has preguntamos si existe en la cache, donde si es el caso regresamos el contenido
+        si no existe hace la consulta en la BD, se insrta en la cache y se muestran los datos al usuario
+    * Si queremos guardar la respuesta en JSON y resulta que tiene muchos registros nos puede dar una excepcion
+        * Allowed memory size of: 536870912 bytes exhausted
+      Esto pasa por superar la cantidad de memoria permitida, como solucion si queremos guardar la repuesta directamente en JSON
+      es primero preguntar si no tenemos la cache y si es no entonces se almacenan primero los datos en la variable convertidos a JSON
+      y esa variable es la que se retorna

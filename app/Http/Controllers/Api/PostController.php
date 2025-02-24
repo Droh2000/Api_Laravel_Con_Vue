@@ -14,7 +14,25 @@ class PostController extends Controller
 
     public function all()
     {
-        return response()->json(Post::get());
+        // Primero preguntamos si tenemos algo en la cache pasadole la KEY
+        /*if(cache()->has('post_index')){
+            // Retornamos lo que tenemos en la cache
+            return response()->json(cache()->get('post_index'));
+        }else{
+            // Si no hay nada en la cache
+            $posts = Post::get();// Generamos el listado de publicaciones
+            cache()->put('post_index');// Almacenamos en la cache
+            return response()->json(Post::get());
+        }*/
+
+        // Implementando el Remember Al cual le tenemos que indicar una fecha
+        // Aqui aprovechamos poniendo todo en una sola linea
+        return response()->json(Cache::remember('post_index', now()->addMinutes(10), function () {
+            // Si no existe lo que esta almacenado en esa KEY entonces se ejecuta lo que definamos dentro de la funcion
+            return Post::all(); // Respuesta almacenada en la BD
+        });)
+
+        //return response()->json(Post::get());
     }
 
     public function index()
