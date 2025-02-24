@@ -48,6 +48,8 @@ class BlogController extends Controller
         // Esto se tendria que implementar desde la opcion de actualizar el registro con el SLUG y con la Key, se elimina la cache y se vuelve a guardar el contenido
         // Esto lo implementamos en le PostController.php
 
+        // Tambien tenemos el metodo de ayuda que es en lugar de usar: Cache:: se usa cache()-> (Toda la demas logica se implementa igual)
+
         // Implementacion usando el metodo del rememberForever (La logica interna de la funcion solo se ejecuta cuando no existen los datos en la cache)
         return Cache::rememberForever('post_show_'.$id, function () use($id){
 
