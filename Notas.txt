@@ -121,3 +121,14 @@ Esta practica si va en el proyecto de laravel de Rest Api
       Esto pasa por superar la cantidad de memoria permitida, como solucion si queremos guardar la repuesta directamente en JSON
       es primero preguntar si no tenemos la cache y si es no entonces se almacenan primero los datos en la variable convertidos a JSON
       y esa variable es la que se retorna
+
+Cache de las Rutas
+    Para que en vez que cada vez que se realiza una peticion laravel lea la cache de las rutas y se ejecuten proceso adicionales
+    se optimicen estas actividades 
+    Originalemnte se lee cada vez el archivo web y cada vez que se cree una ruta ahi, automaticamente se va a cargar o reflejar en la aplicacion
+    pero cuando se crea el cache de las rutas eso no sucede
+    Tenemos los comandos:
+        - php artisan route:cache -> Guardar el cache de las rutas para que luzcan tal cual esta definida en el momento que se ejecuta este comando
+        - php artisan route:clear -> Laravel ahora comparara las rutas con el archivo generado en lugar de los archivos reales usados para las rutas, 
+                                     por lo tanto si realiza cambios en las rutas se ejecuta este comando para limpiar los archivos del cache de las rutas 
+    

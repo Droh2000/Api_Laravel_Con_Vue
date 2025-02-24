@@ -35,3 +35,14 @@ Route::group(['prefix' => 'blog'], function() {
     // Uso del ID en lugar del POST
     Route::get('detail/{id}', [BlogController::class, 'show'])->name('blog.show');
 });
+
+// Ruta de ejemplo para la implementacion del Cache de las rutas
+Route::get('/', function () {
+    // app es una funcion donde podemos obtener datos del framework
+    return ['Laravel' => app()->version()];
+});
+// Despues ejecutamos: php artisan route:cache -> Con esto registra el cache de las rutas
+// Una vez ejecutada si creamos otra ruta o modificamos la ruta estos cambios no se veran reflejados y
+// es por eso que se recomienda ejecutar este comando en produccion
+// Para volver a ver los cambio reflejados se ejecuta: php artisan route:clear
+
