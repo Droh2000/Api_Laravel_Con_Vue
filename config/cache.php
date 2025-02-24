@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Str;
 
+/*
+    Por defecto el cache que se emplea es el de la Base de datos, tambien lo que es uso de Redis
+    o Memcache se requeire instalacion adicional
+    Aqui definimos el tipo de cache que estamos utilizando
+*/
+
 return [
 
     /*

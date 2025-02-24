@@ -7,6 +7,7 @@ use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\PutRequest;
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -71,9 +72,12 @@ class PostController extends Controller
             $request->image->move(public_path('uploads/posts'), $filename);
         }
 
-        $post -> update($data);
+        // Actualizacion de la Cache
+        // Primero eliminamos lo que ya teniamos almacenado, asi cuando se vuelve acceder a la ruta como ya no hay cache se volvera a guardar en el cache 
+        Cache::forget('post_show_'.$post->id);
 
-        return to_route('post.index');
+        $post -> update($data)
+        return to_route('post.index')->with('status', 'Post updated');
     }
 
     /**

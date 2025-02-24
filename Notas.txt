@@ -66,3 +66,47 @@ Ahora vamos a utilizar los Tokens de autenticacion
 Vamos a crear un controlador para el usuario que lo vamos a hacer por cuestiones de tener organizado el proyecto
 ya que el LoginController lo podemos usar para otras situaciones pero en los Tokens ya tiene mas coneccion con el API REST
 Ademas que realizamos algunas otras  modificaciones
+
+        CACHE
+
+Es un sistema de almacenamiento rapido y mejor al desesmpeño al tener que acceder a cada rato solo que su capacidad
+es poca, usualmente es su uso en las peticiones HTTP, aqui hay varios aspectos que se podrian mejorar por ejemplo el uso de la conexion 
+a la base de datos que es algo lento, la cache la podemos usar para agilizar una peticion evitando que la app entre a la BD
+
+Tenemos varios tipos de almacenamiento
+    * Redis: Motor de base de datos clave y valor rapido, se emplea para trabajar con la cache
+
+Tambien si se actualiza o borra algo de la informacion que esta en la cache tambien tenemos que ejecutar estas acciones dentro de la cache
+
+Hay algunas tecnicas en la que se configura para que la cache tenga solo cierto tiempo de duracion
+En la cache podemos almacenar cualquier cosa que sea un Texto o Contenido 
+
+En Laravel tenemos el Cache de Rutas
+    En este caso se genera un archivo temporal en la cual se accede a ese archivo cada vez que nosotros accedamos a una ruta en particular
+    en vez de escanear todo el archivo 
+
+Uso Basico de la Cache:
+    Con la cache en laravel tenemos distintos metodos y opciones que podemos utilizar para adaptarlo a distintos esquemas: (Recordemos que la cache trabaja con
+    el clave y valor, por ejemplo para almacenar el contenido de una pagina para la clave tiene sentido que sea el URL de la pagina o el SLUG), estos metodos se acceden
+    con el Facade "Cache::NombreDelMetodo"
+        * get() -> Recuperar el contenido segun la key que le pasemos o si no queremos que nos regres null le podemos especificar un valor por defecto
+        * has() -> Nos regresa un booleano y sirve para determinar si un elemento existe en la cache o no
+        * put() -> Se le manda la Clave, Duracion de la cache, Los datos que se van a almacenar
+        * putMany() -> Es como el put pero permite almacenar un Array De dato
+        * add() -> Solo agrega el elemento en la cache si no existe y nos regresa un booleano si tuvo exito en el almacenamiento o no
+        * pull() -> Obtener un elemento y luego se elimina de la cache
+        * many() -> Recuperar multiples datos obteniendolos en un Array
+        * remember() -> Verifica si los datos existen en la cache y en caso de no existir podemos definir una logica para resolver la operacion del cliente definiendo
+                        lo que se va almacenar en la cache y se regresa como respuesta
+        * rememberForever() -> Hace lo mismo que arriba pero en este no se le pasa la duracion asi que almacena el contenido para siempre
+        * increment() -> Para incrementar contenido numerico 
+        * decrement() -> Decremantar el contenido numerico
+        * forever() -> Es como el de PUT() pero no se le pasa la duracion ya que es para siempre
+        * forget() ->  Elimina un elemento
+        * flush() -> Eliminar todos los elementos de la cache
+
+El ejercicio que vamos a hacer:
+    * Consultar primero si tenemos algo en la cache, si es asi retornamos lo que tengamo ahi
+        Si no tenemos nada es ir a la vista y con esto vamos a la BD para buscar el contenido, procesar la vista
+        y luego devolverla
+        (Esto se implemento en el BlogController)
