@@ -65,7 +65,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-
+        // Aqui vamos a preguntar si podemos creaar el POST
+        // dd(Gate::check('create', $post));
+        // Aqui se implementarion mas metodos asi de ejemplo pero mejor se opto por ponerlos en el archivo de Notas 
+        
         // Uso del Gate (Entre comillas le pasamos el nombre queremos emplear) y le pasamos el parametro que definimos
         // el del usuario no hace falta pasarlo
         // Si no esta definido el 'update-post' nos retorna Falso y nos bloquea

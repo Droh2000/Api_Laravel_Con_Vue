@@ -204,3 +204,22 @@ Cache de las Rutas
         Vamos a modificar la relacion de usuarios para que tambien podamos ver los Post de los usuarios y esto lo haremos con el proposito para que cuando guardemos el POST lo
         podamos hacer desde la relacion de usuarios de tal forma que no tenemos que moificar el Request para exponer todos los campos e inyectarle el UserID sino que solo lo hacemos
         usando la entidad del usuario 
+
+    Metodos Importantes:
+        * Gate::check() -> Este condicional solo se ejecuta si el usuario tiene permisos de crear el Post
+        * Gate::any() -> Se ejecuta si el usuario tiene al menos uno de los permisos que le estamos indicando 
+        * Gate::none() -> Solo se ejecuta si el usuario no puede actualizar o eliminar (Si no tiene esos u otros permisos)
+        * Gate::can() -> Se ejecuta si el usuario tiene el permiso indicado
+                         Este se pregunta sobre el usuario autenticado:
+                            auth()->user()->can('create', $post);
+        * Gate::canot() -> Se ejecuta si el usuario no tiene el permiso
+        * Gate::forUser() -> Si queremos preguntar para un usuario en particular que no tiene que ser el usuario autenticado (Con este podemos ver que permisos tiene cada usuario para cierta pagina)
+        * Gate::allowIf() -> Muchas veses queremos realizar alguna condicion sin defenir un Gate para ello podemos usar este metodo permitiendo si la condicion es True, asi no definmos el Gate sino que solo
+                             la definimos directamente en el controlador
+                             Como Ejemplo de la implementacion:
+                                (Aqui colocamos dentro de la funcion tanto la regla que vamos a usar y de una vez nos bloque si no tenemos permisos )
+                                Gate::allowIf(fn(User $user) => $user->id > 0);
+        * Gate::denyIf() -> Esto es lo contrario de lo arriba
+        * Gate::authorize() -> Por una parte intenta autoriza la accion y si no la permite lanza una excepcion automaticamente (Seria como el mensaje del Response que vimos anteriormente)
+          
+        
