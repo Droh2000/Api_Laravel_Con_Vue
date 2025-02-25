@@ -222,4 +222,6 @@ Cache de las Rutas
         * Gate::denyIf() -> Esto es lo contrario de lo arriba
         * Gate::authorize() -> Por una parte intenta autoriza la accion y si no la permite lanza una excepcion automaticamente (Seria como el mensaje del Response que vimos anteriormente)
           
-        
+        Metodo Before:
+            Se ejecutara antes que cualquier otro metodo de politica con esto se puede realizar configuraciones comunes para todas las funciones definidas en la Politica
+            

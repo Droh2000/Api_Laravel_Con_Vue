@@ -20,6 +20,20 @@ class PostPolicy
         //
     }*/
 
+    // Implementacion minima del Before
+    // En nuestro caso no es muy ulti porque tenemos segementado el proyecto entre modulos, es decir un modulo de Web y Dashboard
+    // por lo tanto si tenemos muchos CRUDS siempre se tiene que cumplir las mismas condiciones que sen este caso el usario se de 
+    // tipo administrados pero puede que tengamos modulos mas flexibles o en la evaluacion de Reglas y puede que algunas entidad si requeiran
+    // tener ciertos permisos (En esta app que algunos si puedan ser Admins y otros que no)
+    function before(User $user) : bool | null{
+        if($user->isAdmin()){
+            // Si es nulo va a seguir con la ejecucion como lo hace normalmente
+            // si fuera True estaria detiendo la ejecucion y no le damos acceso
+            return null;
+        }
+        return false; // Regresamos esto si la condicion no se cumple (Ejecutamos otro Gate para que lo evalue)
+    }
+
     /**
      * Determine whether the user can view the model.
      */
