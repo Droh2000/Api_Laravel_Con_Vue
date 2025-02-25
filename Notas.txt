@@ -164,3 +164,15 @@ Cache de las Rutas
 
     Despues de la modificacion de los archivos ejecutamos
         - php artisan db:seed -> Con esto generamos datos
+
+    Uso de los Gate
+
+        Lo mismo que podemos emplear con los Gate, lo podemos hacer con los condicionales, Los Gates son Facades que implementan varios metodos
+        para poder usarlo lo registramos en el archivo AppServiceProvider (Aqui se definen las reglas que vamos a definir)
+        Con el metodo "definie" le pasamo un Key como identificador unico, despues recibe una funcion el cual recibe siempre el usuario autentica ya que las reglas tienen
+            relacion directa con el usuario autenticado, el resto de los argumento depende de nuestra nesecidades, dentro de la funcion creamos la regla que queremos evaluar
+            (En este caso sera que el Post pertenesca al usuario autenticado)
+        Dentro de ese archivo podemos definir tantos Gates como queramos y solo los invocamos, la ganancia de usar un Gate en lugar de un condicional es que nos evitamos agreagr
+        logica adicional al controlador
+        Al invocar el gate solo le pasaremos los argumentos adicionales no el usuario ya que eso lo hace automaticamente Laravel por nosotros
+          

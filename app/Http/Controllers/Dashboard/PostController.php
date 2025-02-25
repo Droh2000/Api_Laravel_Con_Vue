@@ -53,6 +53,15 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+
+        // Uso del Gate (Entre comillas le pasamos el nombre queremos emplear) y le pasamos el parametro que definimos
+        // el del usuario no hace falta pasarlo
+        // Si no esta definido el 'update-post' nos retorna Falso y nos bloquea
+        if(!Gate::allows('update-post', $post)){
+            // Aqui bloqueamos el acceso (Aqui sol regresamos un 403)
+            return abort(403);
+        }
+
         $categories = Category::pluck('id', 'title');
         
         return view('dashboard/post/edit', compact('post','categories'));
@@ -63,6 +72,13 @@ class PostController extends Controller
      */
     public function update(PutRequest $request, Post $post)
     {
+
+        // Primero veririfcamos si el usuario tiene el permiso de poder actualizar el POST
+        if(!Gate::allows('update-post', $post)){
+            // Aqui bloqueamos el acceso (Aqui sol regresamos un 403)
+            return abort(403);
+        }
+
         $data = $request->validated();
 
         if(isset($data['image'])){
