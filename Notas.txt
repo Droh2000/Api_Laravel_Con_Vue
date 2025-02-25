@@ -175,4 +175,24 @@ Cache de las Rutas
         Dentro de ese archivo podemos definir tantos Gates como queramos y solo los invocamos, la ganancia de usar un Gate en lugar de un condicional es que nos evitamos agreagr
         logica adicional al controlador
         Al invocar el gate solo le pasaremos los argumentos adicionales no el usuario ya que eso lo hace automaticamente Laravel por nosotros
-          
+
+    Uso de las Politicas
+
+        A diferencia de los Gate en los que tenemos que definir todas las reglas en un solo archivo, con las politicas lo podemos hacer mas modular definiendolo en un archivo aparte 
+        Para esto tenemos el siguiente comando:
+            - php artisan make:policy PostPolicy -> Lo que es "PostPolicy" contiene el prefico "Post" del modelo con el que vamos a trabajar, con esto ademas hacemos que laravel
+                                                    ya sepa cual modelo es el que tiene que usar  
+            - Si no le especificamos correctamente el prefijo tenemos que especificarlo en el mismo comando:
+                php artisan make:policy PostPolicy --model=Post
+        Despues tenemos acceso a los mismos metodos con los que tenemos acceso a los Gate
+        Dentro de las funciones de la clase que nos genera Laravel veremos que estaremos recibiendo el usuario al igual que en los Gates (Con este usuarios preguntamos los datos que requiramos)
+        en seguida le colocamos la entidad con la cual queramos definir las reglas
+        Dentro de las funciones que nos genera estan:
+            - viewAny() -> Es como un before el cual se va a ejecutar antes de cualquiera de las otras reglas que definamos 
+            - view() -> Este es como el metodo Show que teniamos en el CRUD
+            - Crear, Actualizar y Eliminar
+
+        En pocas palabras las politicas son los Gates pero en un archivo aparte para tener todos mas modular
+
+        Despues de creados nuestras reglas en el PostPolicy ahora la podemos usar
+            Solo colocamos el nombre del metodo que queremos emplear (Esto lo hacemos en "PostController")

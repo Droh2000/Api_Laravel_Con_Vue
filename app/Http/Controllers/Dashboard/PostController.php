@@ -72,9 +72,9 @@ class PostController extends Controller
      */
     public function update(PutRequest $request, Post $post)
     {
-
+        // Asi usamos las politicas solo entre las comillas le especificamos el nombre del metodo que queremos ejecutar del archivo
         // Primero veririfcamos si el usuario tiene el permiso de poder actualizar el POST
-        if(!Gate::allows('update-post', $post)){
+        if(!Gate::allows('update', $post)){
             // Aqui bloqueamos el acceso (Aqui sol regresamos un 403)
             return abort(403);
         }
