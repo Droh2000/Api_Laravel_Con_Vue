@@ -45,10 +45,13 @@ class PostPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Post $post): bool
+    public function update(User $user, Post $post): Respose
     {
         // Definimos la misma regla que definimos en los Gates donde solo el usuario que creo el POST puede actualizar
-        return $user->id == $post->user_id;
+        // En este caso vamos a regresar una respuesta  (Del Response tenemos los metodos para permitir el acceso o Denegar)
+        // Aqui si la condicion se cumple permitimos el acceso
+        return $user->id == $post->user_id ? Response::allow() : Response::deny('No eres el usuario deno del Post');
+
     }
 
     /**

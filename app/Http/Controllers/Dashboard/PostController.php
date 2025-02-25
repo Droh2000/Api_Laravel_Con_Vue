@@ -74,9 +74,15 @@ class PostController extends Controller
     {
         // Asi usamos las politicas solo entre las comillas le especificamos el nombre del metodo que queremos ejecutar del archivo
         // Primero veririfcamos si el usuario tiene el permiso de poder actualizar el POST
-        if(!Gate::allows('update', $post)){
+
+        // Con el metodo Allows() tenemos limitantes ya que solo con True o False lo niega y como aqui estamos regresando una respuesta no un Bool de todos modos lo niega
+        // En este caso de las respuestas podemos usar el metodo "inspect()"
+        //if(!Gate::allows('update', $post)){
+        // Con este metodo del "inspect" preguntamos de manera manual con el argumento "->allowed()" y asi podemos acceder al mensaje con "->message()"
+        if(!Gate::inspect('update', $post)->allowed()){
             // Aqui bloqueamos el acceso (Aqui sol regresamos un 403)
-            return abort(403);
+            // Despues Implementamos el dar una respuesta HTTP pero si no modificamos aqui seguremos viendo solo el mensaje 403
+            return abort(403, Gate::inspect('update', $post)->message());
         }
 
         $data = $request->validated();

@@ -196,3 +196,8 @@ Cache de las Rutas
 
         Despues de creados nuestras reglas en el PostPolicy ahora la podemos usar
             Solo colocamos el nombre del metodo que queremos emplear (Esto lo hacemos en "PostController")
+
+        Respuestas de las politicas 
+            No estamos obligados a regresar un booleano, ya que tambien podemos regresar una Respuesta HTTP, de ahi tenemos metodos "allow()" y para denegar como "deny()"
+            Esto es para no mostrarle al usuario solo un carte de FORBIDDEN ya que tambien le podemos dar un mensaje
+            
