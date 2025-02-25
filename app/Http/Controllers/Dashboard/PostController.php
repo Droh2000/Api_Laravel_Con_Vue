@@ -35,7 +35,19 @@ class PostController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Post::create($request->validated());
+        //Post::create($request->validated());
+
+        // Primero creamos un nuevo Post al cual le pasamos la Data
+        $post = new Post($request->validated());
+        // Le asignamos el usuario (Con auth obtenemos una instancia del modelo del usuario)
+        // asi podemos acceder a sus metodos y propiedades (SEria la funcion que creamo), asi guardamos
+        // el usuario pasandole el Post
+        auth()->user()->posts()->save($post);
+
+        // Para ver si funciona esto debemos de crear un nuevo Post
+        // Ademas con: auth()->user()->posts() si lo ponemos un la funcion "dd()" nos da la relacion "HasMany"
+        // con esto podemos realizar cualquier tipo de operacion CRUD y con:
+        // auth()->user()->posts, obtenemos los datos directamente
 
         return to_route('post.index');
     }
