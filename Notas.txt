@@ -132,3 +132,32 @@ Cache de las Rutas
         - php artisan route:clear -> Laravel ahora comparara las rutas con el archivo generado en lugar de los archivos reales usados para las rutas, 
                                      por lo tanto si realiza cambios en las rutas se ejecuta este comando para limpiar los archivos del cache de las rutas 
     
+Gate y Politicas (Autorizacion)
+
+    Con esto agregamos permisos sobre que acciones puede realizar un determinado usuario, seria como los roles y permisos pero mas enfocado a las entidades como 
+    el usuario por ejemplo que tipo de usuarios pueden acceder a ciertas partes de la pagina
+        * En este caso vamos a crear un nuevo campo para la entidad de los post que corresponde al userID por lo tanto para que un usuario pueda editar o eliminar
+        tiene que haber creado ese post (Esta es la regla para ese ejemplo)
+
+    Autenticacion: Hace referencia cuando el usuario presenta sus credenciales (Usuario y contrasena) y realiza el Login
+
+    Autorizacion: Aqui es donde defenimos nuestras reglas para que decidir si cierto usuario puede ver o no cierto recurso segun el ROL que tenga el usuario
+        Para el manejo de la Autorizacion tenemos el uso de los Gate y de las Politicas, la diferencia es que los Gates son funciones y las politicas son clases que
+        por tanto tenemos mayor control y orden pero a la final ambos determinan las reglas de accesso
+
+        El Gate lo podriamos usar para especificar una regla corta pero ya para algo mas complejo con multiples reglas de autorizacion seria una Politica
+        en la Politica tendremos una clase con sus metodos de Update, Create, Delete, estos metodos se mandan a llamar automaticamente cuando en el post se 
+        intenta realizar alguna de estas operaciones
+
+    Preparacion del proyecto:
+        Ahora los post van a pertenecer a un usuario y solo el creador podra eliminarlo o modificarlo
+        - Primero definimos una nueva columna para las publicaciones y que un post pertenesca a un usuario
+            * Creamos una nueva migracion y en el nombre especificamos que vamos a agreagr la columna "user_id" a la tabla "post"
+                - php artisan make:migration add_user_id_to_posts_table
+            * Despues de ejecutar ese comando tenemos el archivo para especificar la creacion de la columna
+              - El problema es que si despues ejecutamos el comendo para migrar es que ya tenemos en la BD varias publicaciones y la columna de "user_id" no va a ser nula
+                por lo tanto va a ver problemas con los datos actuales asi que podemos ir a la BD y eliminar todos los registros en la tabla de Posts
+            - Tambien podemos ejecutar:
+                * php artisan migrate:fresh 
+              Lo que hace es eliminar toda las migraciones, borrar todos los datos y luego volver a ejecutar las migraciones
+        - Con esto ya tenemos la columna "user_id" en la tabla de Posts
