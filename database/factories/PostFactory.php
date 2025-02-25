@@ -25,6 +25,9 @@ class PostFactory extends Factory
             'content' => $this->faker->paragraph(20),
             'description' => $this->faker->paragraph(4),
             'category_id' => $this->faker->randomElement([1,2,3]),
+            // Implementacion de la nueva Columna (Como en este caso tenemos dos usuarios colocamos de 1 a 2, Ahi ponemos los identificadores
+            // dependiendo de la cantidad de usuarios que tengamos)
+            'user_id' => $this->faker->randomElement([1,2]),
             'posted' => $this->faker->randomElement(['yes','no']),
             'image' => $this->faker->imageUrl(),
         ];

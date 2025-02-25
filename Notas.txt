@@ -132,7 +132,7 @@ Cache de las Rutas
         - php artisan route:clear -> Laravel ahora comparara las rutas con el archivo generado en lugar de los archivos reales usados para las rutas, 
                                      por lo tanto si realiza cambios en las rutas se ejecuta este comando para limpiar los archivos del cache de las rutas 
     
-Gate y Politicas (Autorizacion)
+        Gate y Politicas (Autorizacion)
 
     Con esto agregamos permisos sobre que acciones puede realizar un determinado usuario, seria como los roles y permisos pero mas enfocado a las entidades como 
     el usuario por ejemplo que tipo de usuarios pueden acceder a ciertas partes de la pagina
@@ -161,3 +161,6 @@ Gate y Politicas (Autorizacion)
                 * php artisan migrate:fresh 
               Lo que hace es eliminar toda las migraciones, borrar todos los datos y luego volver a ejecutar las migraciones
         - Con esto ya tenemos la columna "user_id" en la tabla de Posts
+
+    Despues de la modificacion de los archivos ejecutamos
+        - php artisan db:seed -> Con esto generamos datos

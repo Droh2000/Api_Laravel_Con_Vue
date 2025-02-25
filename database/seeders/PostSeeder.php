@@ -41,6 +41,9 @@ class PostSeeder extends Seeder
                 'posted'=> "yes",
                 'image'=>"Image$i.jpg",
                 'category_id'=> $c->id,
+                // Hacemos la correccion para que nos agrege correctamente informacion a la columna
+                // Le indicamos "1" que es el usuario de admin porque es el primero que creamos
+                'user_id' => 1
             ]);
 
             // Por el tipo de relacion importa mucho como ejecutemos esto ya que 
