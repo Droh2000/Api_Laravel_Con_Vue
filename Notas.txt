@@ -279,7 +279,7 @@ Cache de las Rutas
                     Accede si tiene Permiso
                 @endcan
 
-        Crear CRUD de Roles
+        Crear CRUD de Roles y otro para los Permisos
             - Crear controlador (Con las operaciones CRUD)
             - Creamos las Rutas
             - Clase Request para validar el nombre

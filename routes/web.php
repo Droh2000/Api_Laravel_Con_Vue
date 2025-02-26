@@ -62,6 +62,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashbo
         'post' => App\Http\Controllers\Dashboard\PostController::class,
         'category' => App\Http\Controllers\Dashboard\CategoryController::class,
         'role' => App\Http\Controllers\Dashboard\RoleController::class,
+        'permission' => App\Http\Controllers\Dashboard\PermissionController::class,
     ]);
 
     Route::get('', function () {
