@@ -65,6 +65,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashbo
         'permission' => App\Http\Controllers\Dashboard\PermissionController::class,
     ]);
 
+    // Roles y Permisos 
+    // Aqui le pasamos del archivo "Manage.php" el nombre del metodo "Handle" y le colocamos el "nombre" para no tener que especificar toda la ruta
+    Route::post('role/assign/permission/{role}', [App\View\Components\Dashboard\role\permission\Manage::class, 'handle'])->name('role.assign.permission');
+
     Route::get('', function () {
         return view('dashboard');
     })->middleware(['auth'])->name('dashboard');
