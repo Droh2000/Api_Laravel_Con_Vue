@@ -335,6 +335,12 @@ Cache de las Rutas
             la session no tendriamos estos problemas) entonces obtenemos la Cookie y se verifica con una condicion donde si la cookie no es nula y si la ruta a la que se quiere acceder no es la 
             de login (Ya que si esta en el login no tiene sentido almacenar algo en la cookie) si no entra a la condicion entonces usamos la funcion "next()" para seguir el proceso del flujo
 
+        Implementacion de Axios en Javascript
 
+            En este punto anteriormente teniamos en la pagina del Dashboard con el Rol al seleccionar en el selector, se esta recargando la pagina es por eso que se va a emplear JS
+            (Para estos casos igual podemos usar Liveware o Inertia)
+
+            Asi que en este caso vamos a hacer las peticiones HTTP al metodo que ya tenemos definido de "Handle" en Manage.php para la asignacion de los Roles
+            Aqui en laravel ya viene Axios instalado
 
 

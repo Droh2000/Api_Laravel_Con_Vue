@@ -33,7 +33,17 @@ class Manage extends Component
         // En el request le mandamos el Permiso
         $permission = Permission::findOrFail(request('permission'));
         $role->givePermissionTo($permission);
+
         // Lo mandamos a la pagina anterior 
-        return redirect()->back();
+        // Por la implementacion de Axios con JS puede que esta no sea la mejor respuesta que podamos devolver 
+        //  return redirect()->back();
+        // Segun lo que pase regresaremos una cosa u otra, para esto preguntamos si la respuesta espera recibir una respuesta de tipo ContentJSON (Ajax)
+        // Este es el formato que usualmente regresamos al hacer peticion de JS que es el JSON, anteriormente recibiamos una respuesta de tipo JSON
+        if(request()->ajax()){
+            // Con esto ya tenemos los datos para cuando se hace la peticion y poder agregar a la lista
+            return response()->json($permission);
+        }else{
+            return redirect()->back();
+        }
     }
 }
