@@ -44,3 +44,7 @@ Route::post('user/login',[UserController::class, 'login']);
 // Usualmente se usa la peticion de POST porque estamos en principio cambiando el esquema de datos
 // que en este caso es para destruir la sesion
 Route::post('user/logout',[UserController::class, 'logout'])->middleware('auth:sanctum'); // Esto se podra hacer si esta la session iniciada
+
+// Para verificar el token si esta activo o NO
+// El parametro se va a mandar mediante GET 
+Route::post('user/token-check}',[UserController::class, 'checkToken']);

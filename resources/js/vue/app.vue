@@ -200,14 +200,21 @@
                     this.user = auth.user
                     this.token = auth.token
                     // verification token
-                    /*this.$axios.post(this.$root.urls.tokenCheck, {
-                        token: auth.token
+                    this.$axios.post(this.$root.urls.tokenCheck, {
+                        token: auth.token // Aqui le pasamos los aprametros que en este caso es el token
                     }).then(() => {
-                        console.log('tokenCheck')
+                        // Si todo sale OK hacemos la inicializacion
+                        /*this.isLoggedIn = true
+                        this.user = auth.user
+                        this.token = auth.token*/
+                        // Aqui comentamos las lineas de arriba ya que puede que mientras esta solicitud ya se esta procesando empieze a hacer sus peticiones
+                        // y estas lineas de codigo puede que todavia no hayan dado una respuesta ya que como esta dentro de la peticion de POSt asyncrona no sabemos
+                        // lo que pueda suceder ya que la peticion se puede demorar mas de lo que deberia y resuleva otras tareas antes
                     }).catch(() => {
-                        this.setCookieAuth('');
-                        window.location.href = '/login'
-                    })*/
+                        // Ai hay problemas mandamos el usuario al Login
+                        this.setCookieAuth(''); // Asi le indicamos que cerramos la sesion
+                        window.location.href = '/login' // Aqui recargamos toda la pagina para que se quede limpio el estado
+                    })
                 }
             }
         },
@@ -268,7 +275,7 @@
                     postPost: '/api/post',
                     getPostBySlug: '/api/post/slug/',
                     getPostCategories: '/api/category/all',
-
+                    tokenCheck: '/api/user/token-check',
                 }
             }
         }

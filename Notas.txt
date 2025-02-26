@@ -290,4 +290,35 @@ Cache de las Rutas
             para administrar los permisos:
                 - php artisan make:component Dashboard/role/permission/Manage
             La estructura inicial vamos a recibir un rol y devolvemos los permisos y luego se usara ese componente en una Blade
-            
+
+        Verificar el token del usuarios
+
+            La desventaja que tenemos al trabajar con informacion de usuario del lado del cliente es que debemos de verificar cuando los datos
+            son validos, el token de eutenticacion no es eterno y se puede eliminar de manera programatica en Laravel o desde la base de datos
+
+            En la sesion no teniamos ese problema ya que si esta activo nos sale la informacion sino nos sale "window.Laravel = {"isLoggedIn": false}"
+            y automaticamente en base a condicionales la aplicacion nos da el acceso o la pierde
+            Con el Token podriamos ir desde la aplicacion en laravel ya sea desde un modulo o desde la BD y lo eliminemos, y con esto no notifiquemos a 
+            a la aplicacion en VUE o simplemente Expire, aspectos de este tipo, es por eso la importancia de siempre poder verificar el Token
+            Entonces tenemos que hacer un metodo adicional tanto en laravel como VUE para verificar el Token
+                En laravel tenemos que verificar si el token recibido con el token (Es importante saber que cuando hacemos el Login en el "UserController.php"
+                el token se manda con la funcion "plainTextToken" y no directamente el token) solo podemos revisar el token que es lo unico que nos propociona el cliente
+                
+                El problema es que al revisar en la BD en la tabla "personal_access_tokens" tenemos una estructura diferente del token a como los vemos por el 
+                "plainTextToken" (Eso es porque uno esta en formato HASH y el otro no)
+                    * Asi que tenemos que convertir el token de "plainTextToken" para poder hacer la operacion de verificar el Token
+                
+                Otro poblema es que el token desde la APP lo tenemos asi:
+                    ID | TOKEN
+                El ID es el que tiene en la base de datos y ese trozo y la barra la tenemos que eliminar para extrar solo el Token y hacer la conversion
+                podriamos pensar en usar solo el ID y no batallar pero eso es inseguro 
+
+                Ademas es importante porque si estamos trabajando desde VUE con un Token invalido y al entrar a una pagina a consumir un recurso de los pots paginados
+                eso nos daria una excepcion de 401 que indica que no estamos autenticados, la Aplicacion fallaria y no sabriamos el proque porlo que una forma de solucionarlo
+                seria colocar en todos los metodos (Porque no sabemos en cual puede ingresar el usuario) una captura de Try/Catch, por eso es que aqui la implementacion es en "App.vue"
+                para tenerlo solo en un lugar y es el primer metodo que se va a ejecutar y a partir de ahi se monta en el resto
+
+                Despues de resuelto los problemas ya podemos buscar en la base de datos
+
+
+
