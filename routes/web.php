@@ -66,8 +66,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashbo
     ]);
 
     // Roles y Permisos 
+    // La rita que especificamos porque asi se nos dio la gana
     // Aqui le pasamos del archivo "Manage.php" el nombre del metodo "Handle" y le colocamos el "nombre" para no tener que especificar toda la ruta
     Route::post('role/assign/permission/{role}', [App\View\Components\Dashboard\role\permission\Manage::class, 'handle'])->name('role.assign.permission');
+    Route::delete('role/delete/permission/{role}', [App\View\Components\Dashboard\role\permission\Manage::class, 'delete'])->name('role.delete.permission');
+    Route::post('role/delete/permission/{role}', [App\View\Components\Dashboard\role\permission\Manage::class, 'delete'])->name('role.delete.permission');
 
     Route::get('', function () {
         return view('dashboard');

@@ -46,4 +46,20 @@ class Manage extends Component
             return redirect()->back();
         }
     }
+
+    function delete(Role $role){
+        // Buscamos el permiso
+        $permission = Permission::findOrFail(request('permission'));
+        // Al Rol le quitamos el permiso
+        $role->revokePermissionTo($permission);
+
+        // Lo adaptamos para el uso de Axios con JS
+        if(request()->ajax()){
+            // Con esto ya tenemos los datos para cuando se hace la peticion y poder agregar a la lista
+            return response()->json($permission);
+        }else{
+            // Esto ya es por nuestro gusto de redirigirlo
+            return redirect()->back();
+        }
+    }
 }
