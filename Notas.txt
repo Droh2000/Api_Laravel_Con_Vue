@@ -259,3 +259,22 @@ Cache de las Rutas
 
         Despues de creados los Roles y Permisos en "RolSeeder.php", ejecutamos:
             * php artisan db:seed --class=RoleSeeder
+
+        Verificar los Permisos
+
+            Hasta este punto no podemos hacer nada con los Roles y Permisos, solo tenemos los datos guradados en la BD, lo importantes es manejarlo con el usuario solo que el usuario
+            no lo hemos metido en nigun proseso, solo fue lo de roles y permisos, todas estas operaciones de aqui solo las podemos hacer con el usuario que es el acceso a los metodos
+            para consulta:
+                * $user->can('editor.post.update'); -> Con este verificamos si el usuario puede hacer determinada operacion, el "user" lo podemos conseguir de varias maneras como el Request/User, AuthFacadeUser, La funcion de ayuda de Auth()/User
+            Lo equivalente del usuario seria el ROL:
+                * $rol->hasPermissionTo('editor.post.update'); -> PReguntamos si tiene el permiso especificado
+            Aqui preguntamos mediante el Facade si el usuario tiene ciertos ROLes:
+                * Auth:user()->hasRole(['Editor', 'Admin']);
+            Aqui preguntamos si tiene alguno de los roles
+                * Auth:user()->hasAnyRole(['Editor', 'Admin']);
+            Si tiene todos los roles, en este caso usamos la operacion a la BD para conseguir todo el listado
+                * $user->hasAllRoles(Role::all());
+            Desde Blade:
+                @can(<PERMISSION>)
+                    Accede si tiene Permiso
+                @endcan
