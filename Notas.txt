@@ -284,3 +284,10 @@ Cache de las Rutas
             - Creamos las Rutas
             - Clase Request para validar el nombre
             - Crear Vistas Blade
+
+        Agregar/Remover permisos a Roles
+            Desde la vista vamos a hacer que se pueden asignar roles y permisos, para eso vamos a crear un componente
+            para administrar los permisos:
+                - php artisan make:component Dashboard/role/permission/Manage
+            La estructura inicial vamos a recibir un rol y devolvemos los permisos y luego se usara ese componente en una Blade
+            
