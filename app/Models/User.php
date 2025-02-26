@@ -50,4 +50,13 @@ class User extends Authenticatable
     function posts(){
         return $this->hasMany(Post::class);
     }
+
+    // Anteriormente (Supongo que en el proyecto primor de laravel ya que aqui no venia la funcion)
+    // Vimos como emplear un sistema de Roles que en este caso es bastante personalizado ya que modificamos
+    // la entidad usuario para agregar este campo "ROL"  y de ahi agregar varias comparaciones
+    // Este esquema nos puede servir para los casos en los que no requerimos un control tan exaustivo 
+    // pero esto no nos sirve para los casos de roles y permisos
+    public function isAdmin(): bool{
+        return $this->rol == 'admin'
+    }
 }

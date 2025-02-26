@@ -225,3 +225,37 @@ Cache de las Rutas
         Metodo Before:
             Se ejecutara antes que cualquier otro metodo de politica con esto se puede realizar configuraciones comunes para todas las funciones definidas en la Politica
             
+
+    Roles y Permisos (Spatie)
+
+        Para esto vamos a emplear un paquete de tercero llamado "Spatie", esto viene siendo como una extencion de las Politicas y Gate, en cualquier sistema tener un Rol significa tener asignado los permisos
+        esto se asigna a los usuarios cada Rol y de esos Roles cada uno tiene Permisos pero igual se pueden asignar Permisos directamente al usuario, Ahora en el Dashboard vamos implementar varias opciones como el de los Roles
+        donde se nos mostraran para agregarlos a cada usuario, entre las opciones tendremos el boton de Mostrar para ver todos los permisos asignados donde podemos borrarlos y asignarlos, ademas tendremos las opciones de Permisos
+        y Usuarios.
+
+        Aqui el Rol usualemente el enfoque que se le da es para asignar los permisos en grupo a los usuarios pero tambien podemos hacer comprobaciones por el rol que tenga el usuario pero usualmente comparamos los permisos que se asignan
+        mediante los roles
+
+        Para este caso tendremos un sistema mas robusto, protegemos ciertos permisos de la aplicacion por ejemplo habilitar las opciones del menu solo para ciertos usuario autenticados que cumplan cierta condicion, entonces tenemos 
+        el ROL y de ahi le asignamos los permisos que serian los accesos, por ejemplo para el Rol de administrador que pueda hacer el tipico CRUD
+        Para el Editor que solo pueda aplicar el crud a los post creados por el mismo.
+        
+        En Laravel tenemos varias tecnologias que se pueden juntar ya que con las politicas existia un caso similar si lo comparamos con los Middlewares donde tambien se podia desarrollar para comparar si el usuario esta autenticado
+        y con Roles tenemos algo similar donde especificamos que tal usuario tenga un permiso en especifico 
+
+        Aqui se crearn tablas pivotes en las BD donde se almacena que permisos existen en los roles, ya que tenemos un Rol el cual tiene asignados multiples permisos y a su vez un usuario puede tener de 0 a N roles y tambien le 
+        podemos asignar permisos de manera directa. Esto lo podemos hacer de varias formas en la que tenemos el Rol y asignarle permisos o podemos tener un permiso y administrarle los roles (Podemos tener la relacion directa o inversa entre 
+        permiso y rol)
+
+        Instalacion y Configuracion (Spatie)
+            - composer require spatie/laravel-permission
+            - php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+            Despues de esto tendremos el archivo de configuracion de "Permission.php" y un nuevo archivo en las migraciones donde tenemos las nuevas tablas y las de pivotes 
+                - php artisan migrate 
+
+        Seeders (Crear datos de prueba)
+            * php artisan make:seeder RoleSeeder
+
+        Despues de creados los Roles y Permisos en "RolSeeder.php", ejecutamos:
+            * php artisan db:seed --class=RoleSeeder
