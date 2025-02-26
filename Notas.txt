@@ -320,5 +320,21 @@ Cache de las Rutas
 
                 Despues de resuelto los problemas ya podemos buscar en la base de datos
 
+        Proteger Rutas por Autenticacion Reqeurida
+
+            En este caso lo vamos a ver desde la aplicacion en VUE para poder evitar acceder al "ListComponent" antes que se cargen laas peticiones HTTP
+            Incluso podemos agregar una capa mas de proteccion implementando el "beforeEach" del objeto Router este recibe 3 argumentos
+                - Especificar la ruta de destino que es hacia donde quiere ir
+                - La ruta actual desde donde viene
+                - Una funcion la cual podemos ir a la siguiente Ruta
+            Esto es lo mismo como cuando creamos el Middleware para el Dashboard del usuario en "UserAccessDashboardMiddleware" dentro del metodo Handler tenemos la condicion y si todo
+            sale OK ejecutamos la funcion "$next" que seria hacia dodne queremos ir.
+
+            Solo que tenemos el problema que no tenemos acceso el "this" que es del ambito de los componentes ya que esto no es un componente, es un archivo aparte
+            para definir las rutas asi que no tenemos esas caracteristicas de VUE asi que tenemos que emplear directamente el de la Cookie (Todo esto va de mano de la Cookie ya que si esto fuera
+            la session no tendriamos estos problemas) entonces obtenemos la Cookie y se verifica con una condicion donde si la cookie no es nula y si la ruta a la que se quiere acceder no es la 
+            de login (Ya que si esta en el login no tiene sentido almacenar algo en la cookie) si no entra a la condicion entonces usamos la funcion "next()" para seguir el proceso del flujo
+
+
 
 
