@@ -278,3 +278,9 @@ Cache de las Rutas
                 @can(<PERMISSION>)
                     Accede si tiene Permiso
                 @endcan
+
+        Crear CRUD de Roles
+            - Crear controlador (Con las operaciones CRUD)
+            - Creamos las Rutas
+            - Clase Request para validar el nombre
+            - Crear Vistas Blade

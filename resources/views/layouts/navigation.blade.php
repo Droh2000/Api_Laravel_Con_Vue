@@ -30,6 +30,9 @@
                     <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
                         {{ __('Category') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                        {{ __('Role') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -90,6 +93,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
                 {{ __('Category') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                {{ __('Role') }}
             </x-responsive-nav-link>
         </div>
 
