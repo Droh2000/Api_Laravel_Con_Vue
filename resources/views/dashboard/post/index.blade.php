@@ -1,13 +1,17 @@
-@extends('dashboard/master')
+@extends('dashboard.master')
 
 @section('content')
-    <a class="btn btn-primary my-3" href="{{ route('post.create') }}" target="blank">Crear Post</a>
-
-    <!-- De los posts solo vamos a mostrar titulo pero no el contenido porque es mucho dato 
+     <!-- De los posts solo vamos a mostrar titulo pero no el contenido porque es mucho dato 
     
         En la tabla podemos agregar las opciones CRUD al lado del registro o mas opciones
         Por eso se agrega la columna de las opciones
+
+        La directiva "can" es para indicarle el perimos que debe de tener el usuario y dentro lo que se mostrara o no
+        segun si el usuario cumple o no el permisos
     -->
+    @can('editor.post.create')
+        <a class="btn btn-primary my-3" href="{{ route('post.create') }}" target="blank">Create</a>
+    @endcan
     <table class="table">
         <thead>
             <tr>
@@ -16,58 +20,65 @@
                 </th>
                 <th>
                     Title
-                </th> 
+                </th>
                 <th>
                     Posted
-                </th> 
+                </th>
                 <th>
                     Category
-                </th> 
+                </th>
                 <th>
                     Options
                 </th>
             </tr>
+            
         </thead>
         <tbody>
-            @foreach ($posts as $post)
+            @foreach ($posts as $p)
                 <tr>
                     <td>
-                        {{$post->id}}
+                        {{ $p->id }}
                     </td>
                     <td>
-                        {{$post->title}}
+                        {{ $p->title }}
                     </td>
                     <td>
-                        {{$post->posted}}
+                        {{ $p->posted }}
                     </td>
                     <td>
                         <!-- Por la relacion que implementamos en el modelo nos sale por defecto toda la informacion de la
                             categoria, asi que solo obtenemos el campo que nos interesa -->
-                        {{$post->category->title}}
+                        {{ $p->category->title }}
                     </td>
                     <td>
-                        <a class="btn btn-succes mt-2" href="{{ route('post.show', $post->id) }}">Mostrar</a>
-                        <a class="btn btn-succes mt-2" href="{{ route('post.edit', $post->id) }}">Editar</a>
+                        <a class="btn btn-success mt-2" href="{{ route('post.show',$p) }}">Show</a>
                         <!-- Para el de eliminar tenemos que hacerlo de otra forma porque asi no va funcion, se tiene que hacer por
-                             que es con un formulario porque no es una peticion de tipo GET-->
-                        <form action="{{route('post.destroy',$post->id)}}" method="post">
-                            @method('delete')
+                             que es con un formulario porque no es una peticion de tipo GET
+                            
+                             Con este CAN protegemos los botones para que solo salgan si se tiene los permisos 
+                        -->
+                        @can('editor.post.update')
+                            <a class="btn btn-success mt-2" href="{{ route('post.edit',$p) }}">Edit</a>
+                        @endcan
+                        @can('editor.post.destroy')
+                        <form action="{{ route('post.destroy', $p) }}" method="post">
+                            @method('DELETE')
                             @csrf
-                            <button class="btn btn-danger mt-2" type="submit">Eliminar</button>
+                            <button class="btn btn-danger mt-2" type="submit">Delete</button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-
     <!-- 
         PARA LA PAGINACION
 
         Ya implementada en el controlador con esto creamos la forma de navegar entre paginas
         Este componente por defecto usa clases de CSS Tawing
     -->
-    <div class="mt-2">
-        {{ $posts -> links() }}
-    </div>
+    <div class="mt-2"></div>
+    {{ $posts->links() }}
+
 @endsection

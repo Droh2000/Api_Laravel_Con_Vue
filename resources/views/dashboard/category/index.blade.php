@@ -1,8 +1,12 @@
-@extends('dashboard/master')
+@extends('dashboard.master')
 
 @section('content')
-    <a class="btn btn-primary my-3" href="{{ route('category.create') }}" target="blank">Create Category</a>
-
+    <!-- 
+        Directiva CAN para proteger elementos si no se tienen los permisos 
+    -->
+    @can('editor.post.create')
+        <a class="btn btn-primary my-3" href="{{ route('post.create') }}" target="blank">Create</a>
+    @endcan
     <table class="table">
         <thead>
             <tr>
@@ -13,41 +17,53 @@
                     Title
                 </th>
                 <th>
-                    Slug
+                    Posted
+                </th>
+                <th>
+                    Category
                 </th>
                 <th>
                     Options
                 </th>
             </tr>
+            
         </thead>
         <tbody>
-            @foreach($categories as $category)
+            @foreach ($posts as $p)
                 <tr>
                     <td>
-                        {{$category->id}}
+                        {{ $p->id }}
                     </td>
                     <td>
-                        {{$category->title}}
+                        {{ $p->title }}
                     </td>
                     <td>
-                        {{$category->slug}}
+                        {{ $p->posted }}
                     </td>
                     <td>
-                        <a class="btn btn-success mt-2" href="{{route('category.show',$category->id)}}">Mostrar</a>
-                        <a class="btn btn-success mt-2" href="{{route('category.edit',$category->id)}}">Editar</a>
-                        <form action="{{route('category.destroy',$category->id)}}" method="post">
+                        {{ $p->category->title }}
+                    </td>
+                    <td>
+                        <a class="btn btn-success mt-2" href="{{ route('post.show',$p) }}">Show</a>
+
+                        @can('editor.post.update')
+                            <a class="btn btn-success mt-2" href="{{ route('post.edit',$p) }}">Edit</a>
+                        @endcan
+                        @can('editor.post.destroy')
+                        <form action="{{ route('post.destroy', $p) }}" method="post">
+                            @method('DELETE')
                             @csrf
-                            @method('delete')
-                            <button class="btn btn-danger mt-2" type="submit">Eliminar</button>
+                            <button class="btn btn-danger mt-2" type="submit">Delete</button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    
-    <!-- Paginacion -->
-    <div class="mt-2">
-        {{$categories->links()}}
-    </div>
+
+    <!-- Paginacio/ -->
+    <div class="mt-2"></div>
+    {{ $posts->links() }}
+
 @endsection
