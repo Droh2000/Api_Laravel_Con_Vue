@@ -356,3 +356,15 @@ Cache de las Rutas
                     automaticamente se ejecuta la logica interna del metodo (En este caso seria convertir el contenido a Hash para que no sea texto plano)
                 * La otra forma es en el controlador al crear la entidad con "User::create" y dentro en donde definamos los campos al llegar al de passowrd lo convertimos a un Hash
 
+        Generar Factory para los usuarios
+            Para crear datos de prueba ya habiamos creado "UserFactory.php" donde en la funcion "definition()" tenemos la definicion
+            Esto lo creamos con el comando: php artisan make:factory UserFactory
+
+            Para implementarlo lo usamos dentro del archivo DatabaseSeeder.php colocamos para meterle informacion del usuario
+                - php artisan db:seed
+
+        Gestion de Roles a Usuarios
+                - Creamos los archivos correspondientes
+
+            
+            
