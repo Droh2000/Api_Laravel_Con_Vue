@@ -94,8 +94,11 @@
     function assignPermissionToRol(roleId) {
 
         // Aqui almacenamos la refrencia del elemento del selector en el HTML
+        // Buscamos si el permiso ya existe antes de intentarlo agregar
         const perId = document.querySelector('select[name="permission"]').value
         // Como puede que no este ningun elemento seleccionado en el selector puede que nos de nulo asi que verificamos primero
+        // Esto se hizo para Evitar insertar permisos repetidos al listado (Estos si se agregan a la interface pero no en la BD por 
+        // la logica implementada, asi que solo hay que evitar que se agregen al listado ai ya estan)
         if (document.querySelector('.per_' + perId) !== null) {
             return alert('Permission already assigned')
         }
