@@ -80,7 +80,8 @@
                 axios.post('{{ route('role.delete.permission', $role->id) }}', {
                     'permission': perId // Le pasamos la Data por el ID
                 }).then((res) => {
-                    // Eliminamos el ITEM del listado
+                    // Eliminamos el ITEM del listado (Implementacion del eliminado del permiso)
+                    // Ponemos un . al inicio porque estamos buscando por una clase
                     document.querySelector('.per_' + perId).remove()
                 })
             })
@@ -110,7 +111,7 @@
             // Un problema que teniamos al incio es que teniamos es que podemos agregar permisos que ya teniamos, este no se coloca en la BD
             // pero si sale reflejado en la pagina (Se puede verificar esto con una condicional o preguntar antes si ya tenemos el permiso en 
             // el metodo Handle) de la clase "Manage.php"
-            // A este contenido le colocamos los atributos para asignarle su ID y nombre de su correspondiente Atributo 
+            // A este contenido le colocamos los atributos para asignarle su ID y nombre de su correspondiente Atributo (Esto lo definimos para eliminar el permiso)
             document.querySelector('#permissionListRol').innerHTML += ` 
                     <li class="per_${ res.data.id }">
                         ${res.data.name}
