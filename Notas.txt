@@ -366,5 +366,12 @@ Cache de las Rutas
         Gestion de Roles a Usuarios
                 - Creamos los archivos correspondientes
 
-            
-            
+        Verificar Accesos Mediante Spatie
+            Podemos comprobar mediante permisos o mediante Roles, aqui vamos a usar tinkerkat
+                * php artisan tinker 
+            Buscamos el usuario 2
+                * User::find(2)
+            Le indicamos el permiso por el cual queremos preguntar. En tinker fallo pero podemos emplear el "dd()" en laravel para verificar
+                * User::find(2)->hasPermissionTo('editor.post.create')
+            Asi preguntamos por los roles
+                * User::find(2)->hasRole('Admin')    
