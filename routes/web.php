@@ -73,9 +73,26 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashbo
     Route::delete('role/delete/permission/{role}', [App\View\Components\Dashboard\role\permission\Manage::class, 'delete'])->name('role.delete.permission');
     Route::post('role/delete/permission/{role}', [App\View\Components\Dashboard\role\permission\Manage::class, 'delete'])->name('role.delete.permission');
 
+    // user - roles - permissions
+    Route::post('user/assign/role/{user}', [App\View\Components\Dashboard\user\role\permission\Manage::class, 'handleRole'])->name('user.assign.role');
+    Route::delete('user/delete/role/{user}', [App\View\Components\Dashboard\user\role\permission\Manage::class, 'deleteRole'])->name('user.delete.role');
+    // Como en la peticion no le  podemos pasar datos mediantes el Request entonces tendiramos que hacerlo mediante el POST y asi le pasamos por la URL el ROL que le queremos eliminar
+    Route::post('user/delete/role/{user}', [App\View\Components\Dashboard\user\role\permission\Manage::class, 'deleteRole'])->name('user.delete.role');
+    
+    //permissions (Con esto ya tenemos la gestion del servidor)
+    Route::post('user/assign/permission/{user}', [App\View\Components\Dashboard\user\role\permission\Manage::class, 'handlePermission'])->name('user.assign.permission');
+    Route::delete('user/delete/permission/{user}', [App\View\Components\Dashboard\user\role\permission\Manage::class, 'deletePermission'])->name('user.delete.permission');
+    Route::post('user/delete/permission/{user}', [App\View\Components\Dashboard\user\role\permission\Manage::class, 'deletePermission'])->name('user.delete.permission');
+
     Route::get('', function () {
         return view('dashboard');
     })->middleware(['auth'])->name('dashboard');
+});
+
+Route::group(['prefix' => 'blog'], function () {
+    Route::get('', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('detail/{id}', [BlogController::class, 'show'])->name('blog.show');
+    // Route::get('detail/{post}', [BlogController::class, 'show'])->name('blog.show');
 });
 
 require __DIR__ . '/auth.php';

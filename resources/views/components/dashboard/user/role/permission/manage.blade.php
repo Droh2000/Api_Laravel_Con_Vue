@@ -1,9 +1,10 @@
 <div>
     <div class="card card-gray mb-3">
+        <!-- Aqui vamos a colocar los Roles que ya tienen asignados los usuarios -->
         <h3>User's Roles</h3>
         <div class="ml-3">
-
             <ul id="rolesListUser">
+                <!-- Aqui no le colocamos los parentisis ya que solo queremos lo que nos regresa la coleccion -->
                 @foreach ($user->roles as $r)
                     <li class="role_{{ $r->id }} item-list">
                         {{ $r->name }}
@@ -34,7 +35,10 @@
     </div>
 
     <hr class="my-3">
-
+    <!-- Asignacion de permisos directamente a los usuarios
+        
+        Aqui en esta primera parte solo salen los permisos que tenga el usuario asignado
+    -->
     <div class="card card-gray  mb-3">
         <h3>User's Permissions</h3>
         <div class="ml-3">
