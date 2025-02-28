@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rol' // Agregamos el Rol
     ];
 
     /**
@@ -56,7 +57,13 @@ class User extends Authenticatable
     // la entidad usuario para agregar este campo "ROL"  y de ahi agregar varias comparaciones
     // Este esquema nos puede servir para los casos en los que no requerimos un control tan exaustivo 
     // pero esto no nos sirve para los casos de roles y permisos
-    public function isAdmin(): bool{
-        return $this->rol == 'admin'
+    /*public function isAdmin(): bool{
+        return $this->rol == 'admin';
+    }*/
+
+    // Funcion mutadora para convertir el Password encriptada
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = Hash::make($value);
     }
+
 }

@@ -343,4 +343,16 @@ Cache de las Rutas
             Asi que en este caso vamos a hacer las peticiones HTTP al metodo que ya tenemos definido de "Handle" en Manage.php para la asignacion de los Roles
             Aqui en laravel ya viene Axios instalado
 
+        Crear CRUD de los usuarios
+
+            En el archivo StoreRequest tenemos algunos cambios en la parte de validacion, usamos la funcion "uncompromised()" que llama unas validaciones internas
+            para poner un password seguro, al final de este tenemos para que el usuario confirme su contrasena en "password_confirmation" el cual en el primer campo
+            que solo es "password" le especificamos igualmente "confirmed" para que se confirme la clave esto es porque el nombre "password_confirmation" tomamos como prefijo
+            el nombre del campo "password" seguido de "_confirmation" (Asi laravel automaticamente hace el match del campo de confirmacion con el campo en especifico)
+
+            Para la creacion del password no se puede guardar en texto plano, para eso tenemos dos formas diferentes:
+                * Una es a nivel de modelo "User.php" con el mutador donde solo creamos un metodo que lo llamaos "set"_"Attribute" y en el medio donde esta el guion le ponemos 
+                    nombre del campo que queremos personalizar, que entonces quedaria como "setPassowrdAttribute", esto hace que automaticamente cuando se vaya establecer ese dato
+                    automaticamente se ejecuta la logica interna del metodo (En este caso seria convertir el contenido a Hash para que no sea texto plano)
+                * La otra forma es en el controlador al crear la entidad con "User::create" y dentro en donde definamos los campos al llegar al de passowrd lo convertimos a un Hash
 

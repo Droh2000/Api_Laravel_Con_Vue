@@ -63,6 +63,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', UserAccessDashbo
         'category' => App\Http\Controllers\Dashboard\CategoryController::class,
         'role' => App\Http\Controllers\Dashboard\RoleController::class,
         'permission' => App\Http\Controllers\Dashboard\PermissionController::class,
+        'user' => App\Http\Controllers\Dashboard\UserController::class,
     ]);
 
     // Roles y Permisos 
