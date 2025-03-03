@@ -69,4 +69,13 @@ class User extends Authenticatable
         $this->attributes['password'] = Hash::make($value);
     }
 
+    // Creamos esta funcion y dentro le colocamos todas las reglas que queramos poner
+    // Aqui depende segun las necesidades, si un usuario es de tipo Admin por defecto ya deberia de tener el ROL de editor
+    // o como aqui que pregunta si es de tipo aditor o administrador
+    public function accessDashboard(): bool{
+        // return $this->rol == 'admin';
+        // El usuario Regular tambien podra acceder a esta opcion 
+        return $this->hasRole('Editor') || $this->hasRole('Admin');
+    }
+
 }

@@ -25,14 +25,17 @@ class PostPolicy
     // por lo tanto si tenemos muchos CRUDS siempre se tiene que cumplir las mismas condiciones que sen este caso el usario se de 
     // tipo administrados pero puede que tengamos modulos mas flexibles o en la evaluacion de Reglas y puede que algunas entidad si requeiran
     // tener ciertos permisos (En esta app que algunos si puedan ser Admins y otros que no)
-    function before(User $user) : bool | null{
-        if($user->isAdmin()){
+    /*function before(User $user) : bool | null{
+        //if($user->isAdmin()){
+        if($user->accessDashboard()){ // Usamos el metodo creaddo en: app/Modeks/User
             // Si es nulo va a seguir con la ejecucion como lo hace normalmente
             // si fuera True estaria detiendo la ejecucion y no le damos acceso
             return null;
         }
         return false; // Regresamos esto si la condicion no se cumple (Ejecutamos otro Gate para que lo evalue)
-    }
+    }*/
+    // El metodo de arriba se comento porque hay una dualidad con el de middleware en UserAccessDashboardMiddleware.php
+    
 
     /**
      * Determine whether the user can view the model.

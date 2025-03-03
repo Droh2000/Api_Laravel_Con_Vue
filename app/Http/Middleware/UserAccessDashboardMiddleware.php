@@ -31,10 +31,14 @@ class UserAccessDashboardMiddleware
         // con un metodo el cual se encarge de hacer esa verificacion por nosotros
         // No importa que salga que de Error porque si va a funcionar
         // Ese es un Facades y todos tienen su equivalente a funciones: auth()->user()
-        if(Auth::user()->isAdmin()){
+        /*if(Auth::user()->isAdmin()){
+            return $next($request);
+        }*/
+
+        if(Auth::user()->accessDashboard()){ // Usamos el metodo de app/Models/User
             return $next($request);
         }
 
-        return redirect('/');
+        //return redirect('/');
     }
 }
