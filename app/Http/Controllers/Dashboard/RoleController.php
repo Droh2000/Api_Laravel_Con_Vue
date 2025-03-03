@@ -13,6 +13,7 @@ class RoleController extends Controller
 
     public function index()
     {
+        // De una hace la evaluacion y si no tiene los permisos regresa un 403
         Gate::authorize('is-admin');
         $roles = Role::paginate(10);
         return view('dashboard/role/index', compact('roles'));

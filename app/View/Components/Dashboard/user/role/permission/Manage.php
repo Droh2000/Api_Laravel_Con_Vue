@@ -37,6 +37,7 @@ class Manage extends Component
     // Estos metodos los renombramos agregandoles la parte de Role o Permission para no tener conflictos ya que aqui creamos ROLES y permisos
     public function handleRole(User $user)
     {
+        // Le agregamos la proteccion para que solo el administrador pueda ejecutar la accion
         Gate::authorize('is-admin');
         // Aqui entre comillas le colocamos 'role' en el manage.blade.php del usuario dentro de la funcion assignRoleToUser()
         // dentro del axios.post

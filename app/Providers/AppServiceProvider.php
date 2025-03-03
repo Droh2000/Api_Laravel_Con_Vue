@@ -41,5 +41,12 @@ class AppServiceProvider extends ServiceProvider
             // y ademas el usuario tiene permisos que se le pase (Editar, eliminar, actualizar)
             return ($user->hasRole('Admin') || !$userParams->hasRole('Admin')) && auth()->user()->hasPermissionTo($permissionName);
         });
+
+        // Todos estos esquemas de sguridad depende de lo que se nos solicite no se tiene porque implementar todos
+        // aqui preguntamos directamente por el ROL, asi el Admministrador ya tiene estos accesos
+        // Verificamos si es administrador
+        Gate::define('is-admin', function ($user) {
+            return $user->hasRole('Admin');
+        });
     }
 }

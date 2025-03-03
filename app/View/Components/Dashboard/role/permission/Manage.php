@@ -4,6 +4,7 @@ namespace App\View\Components\Dashboard\role\permission;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Component;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -20,6 +21,7 @@ class Manage extends Component
 
     public function render(): View|Closure|string
     {
+        Gate::authorize('is-admin'); // Para que solo el administrador pueda hacer la accion
         // Aqui regresamos los permisos 
         // Aqui le agregamos los permisos a la vista para tener los datos y manejarlos internamente
         return view('components.dashboard.role.permission.manage', ['permissionsRole' => $this->role->permissions, 'permissions' => Permission::get()]);
@@ -28,6 +30,7 @@ class Manage extends Component
     // Para asignar permisos al rol mediante un formulario
     public function handler(Role $role)
     {
+        Gate::authorize('is-admin');
         // Vamos a recibir el permiso
         // Con el metodo de "findOrFail" es que si no encuentra el registro nas da una excepcion de 404 (Asi evitamos hacer validaciones adicionales)
         // En el request le mandamos el Permiso
@@ -48,6 +51,7 @@ class Manage extends Component
     }
 
     function delete(Role $role){
+        Gate::authorize('is-admin');
         // Buscamos el permiso
         $permission = Permission::findOrFail(request('permission'));
         // Al Rol le quitamos el permiso

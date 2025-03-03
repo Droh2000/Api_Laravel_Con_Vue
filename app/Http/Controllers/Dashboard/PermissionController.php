@@ -12,7 +12,8 @@ class PermissionController extends Controller
 {
 
     public function index()
-    {
+    {   
+        // De una hace la evaluacion y si no tiene los permisos regresa un 403
         Gate::authorize('is-admin');
         $permissions = Permission::paginate(10);
         return view('dashboard/permission/index', compact('permissions'));
