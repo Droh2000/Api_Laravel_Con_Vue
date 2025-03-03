@@ -23,22 +23,33 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <!-- Aqui colocamos nuestras Rutas de lo que nosotros creamos -->
-                    <x-nav-link :href="route('post.index')" :active="request()->routeIs('post.index')">
-                        {{ __('Post') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
-                        {{ __('Category') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
-                        {{ __('Role') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('permission.index')" :active="request()->routeIs('permission.index')">
-                        {{ __('Permission') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                        {{ __('User') }}
-                    </x-nav-link>
+                    <!-- Aqui colocamos nuestras Rutas de lo que nosotros creamos 
+                        y con en CAN le agregamos para que se muestren u oculten segun los permisos del usuarioq ue inicie sesion
+                    -->
+                    @can('editor.post.index')
+                        <x-nav-link :href="route('post.index')" :active="request()->routeIs('post.index')">
+                            {{ __('Post') }}
+                        </x-nav-link>
+                    @endcan
+                    @can('editor.category.index')
+                        <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
+                            {{ __('Category') }}
+                        </x-nav-link>
+                    @endcan
+                    <!--Preguntamos por el ROL segun la implementacion que hicimos antes, si es de tipo Admin -->
+                    @if (auth()->user()->hasRole('Admin'))
+                        <x-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                            {{ __('Role') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('permission.index')" :active="request()->routeIs('permission.index')">
+                            {{ __('Permission') }}
+                        </x-nav-link>
+                    @endif
+                    @can('editor.user.index')
+                        <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                            {{ __('User') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -94,21 +105,31 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('post.index')" :active="request()->routeIs('post.index')">
-                {{ __('Post') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
-                {{ __('Category') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
-                {{ __('Role') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('permission.index')" :active="request()->routeIs('permission.index')">
-                {{ __('Permission') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
-                {{ __('User') }}
-            </x-responsive-nav-link>
+            @can('editor.post.index')
+                <x-responsive-nav-link :href="route('post.index')" :active="request()->routeIs('post.index')">
+                    {{ __('Post') }}
+                </x-responsive-nav-link>
+            @endcan
+            @can('editor.category.index')
+                <x-responsive-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
+                    {{ __('Category') }}
+                </x-responsive-nav-link>
+            @endcan
+
+            @if (auth()->user()->hasRole('Admin'))
+                <x-responsive-nav-link :href="route('role.index')" :active="request()->routeIs('role.index')">
+                    {{ __('Role') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('permission.index')" :active="request()->routeIs('permission.index')">
+                    {{ __('Permission') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @can('editor.user.index')
+                <x-responsive-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
+                    {{ __('User') }}
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->
