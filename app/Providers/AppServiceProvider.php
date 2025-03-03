@@ -39,6 +39,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('update-view-user-admin', function ($user, $userParams, $permissionName) {
             // Si el usuario es administrador o no es admin (El usuario regular no podra ejecutar la accion, si no es Admin vamos a derificar que el que quiere verificar) 
             // y ademas el usuario tiene permisos que se le pase (Editar, eliminar, actualizar)
+            // Entonces Aqui preguntamos si es Admin o no tiene el Rol de Admin y en AND preguntamos por el permiso correspondiente (Con esto nos ahorramos tener que agregar 
+            // la condicion de "hasPermissionTo" a cada metodo del UserController)
             return ($user->hasRole('Admin') || !$userParams->hasRole('Admin')) && auth()->user()->hasPermissionTo($permissionName);
         });
 

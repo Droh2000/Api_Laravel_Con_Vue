@@ -37,6 +37,7 @@ class UserController extends Controller
 
     public function create()
     {
+        // Nos podemos crear un Gate especifico para esta y evitar tener que crear esta condicion empleando ya todo dentro del Gate
         if (!auth()->user()->hasPermissionTo('editor.user.create')) {// Primero se verifica si el usuario tiene este permiso
             return abort(403);
         }
@@ -74,20 +75,20 @@ class UserController extends Controller
     {
         // Politica para que solo el administrador puede realizar (La funcion ya por defecto se le pasa el usuario administrador)
         // el usuario que le pasamos es el que esta ejecutando la accion
-        Gate::authorize('update-view-user-admin', [$user, 'editor.user.update']);
+        Gate::authorize('update-view-user-admin', [$user, 'editor.user.update']);// Le pasamos como segundo parametro el permiso y nos ahorramos el condicional
         return view('dashboard.user.edit', compact('user'));
     }
 
     public function update(PutRequest $request, User $user)
     {
-        Gate::authorize('update-view-user-admin', [$user, 'editor.user.update']);
+        Gate::authorize('update-view-user-admin', [$user, 'editor.user.update']);// Le pasamos como segundo parametro el permiso y nos ahorramos el condicional
         $user->update($request->validated());
         return to_route('user.index')->with('status', 'User updated');
     }
 
     public function destroy(User $user)
     {
-        Gate::authorize('update-view-user-admin', [$user, 'editor.user.destroy']);
+        Gate::authorize('update-view-user-admin', [$user, 'editor.user.destroy']);// Le pasamos como segundo parametro el permiso y nos ahorramos el condicional
         $user->delete();
         return to_route('user.index')->with('status', 'User delete');
     }
