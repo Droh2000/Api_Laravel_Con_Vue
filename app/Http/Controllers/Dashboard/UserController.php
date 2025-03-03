@@ -14,19 +14,30 @@ class UserController extends Controller
     public function index()
     {
         // $users = User::paginate(10);
+        // Aqui preguntamos si el usuario tiene acceso a la operacion "editor.user.index"
         if (!auth()->user()->hasPermissionTo('editor.user.index')) {
             return abort(403);
         }
+
+        // Tenemos dos tipos de usuarios, uno administracion y otro regular (El administrador siempre tiene que estar por encima)
+        // por eso tenemos esta comparacion (El administrador debe de traer todos los usuarios que esten por debajo de el y el Regular no tiene porque ver los usuarios admin)
+        // El WHEN es un condicional que si se cumple la condicion pasda ejecuta el codigo de la funcion
+        // Aqui preguntamos que si el usuario no es adminstrador entonces solo hay usuarios regulares
         $users = User::when(!auth()->user()->hasRole('Admin'), function ($query, $isAdmin) {
+            // Preguntamos si el ROL es regular regresamos los usuarios de tipo regular
             return $query->where('rol', 'regular'); // regular = editor
         })->paginate(10);
+        // El problema de solo implementar eso es que aun asi los usuarios regulares pueden ver los administradores desde la URL y editarlos
+        // asi que empleamos en app\Providers\AppServiceProvider.php, aplicando usos de los Gates para definir una regla de acceso
+        // que por definicion eso es un permiso 
+
 
         return view('dashboard/user/index', compact('users'));
     }
 
     public function create()
     {
-        if (!auth()->user()->hasPermissionTo('editor.user.create')) {
+        if (!auth()->user()->hasPermissionTo('editor.user.create')) {// Primero se verifica si el usuario tiene este permiso
             return abort(403);
         }
 
@@ -36,7 +47,7 @@ class UserController extends Controller
 
     public function store(StoreRequest $request)
     {
-        if (!auth()->user()->hasPermissionTo('editor.user.create')) {
+        if (!auth()->user()->hasPermissionTo('editor.user.create')) {// Igual se verifica si tiene primero el permiso
             return abort(403);
         }
         /*
@@ -61,6 +72,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        // Politica para que solo el administrador puede realizar (La funcion ya por defecto se le pasa el usuario administrador)
+        // el usuario que le pasamos es el que esta ejecutando la accion
         Gate::authorize('update-view-user-admin', [$user, 'editor.user.update']);
         return view('dashboard.user.edit', compact('user'));
     }
