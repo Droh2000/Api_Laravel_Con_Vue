@@ -397,6 +397,58 @@ Relaciones
     Muchos a Muchos: Aqui es donde tenemos que crear una tercera tabla que es la que mantiene la relacion, aqui vamos a usar el modelo de etiquetas que se la vamos a asignar a las publicaciones
                     es decir un post puede tener multiples etiquetas y esas etiquetas se pueden reutilizar en otras publicaciones
 
+                Haciendo pruebas en tinker:
+                    - php artisan tinker
+                    - $post = Post::find(1) -> Buscamos este post
+                    Obtenemos la categoria con la que se relaciona
+                    - $post = Post::find(1)->category -> Solo obtenemos una porque es la que tiene UNA
+                    La categoria es la que puede estar asignada a multiples Posts
+                    - $category = Category::find(18)->posts (La relacion inversa es el que tiene el metod hasMany())
+
+    Muchos a Muchos: En esta relacion vamos usar la de las etiquetas, un post puede tener cero o N etiquetas asignadas y al igual que ocurre con las categorias una puede estas asignadas a multiples Posts
+        (Esta se trabajara mas adelante con las relaciones polimorficas para poder emplear la misma tabla de etiquetas en otras entidades) 
+        Aqui cremos una tercera tabla que es la que relaciona las etiquetas con los Posts (En la relacion polimorfica va a ser otra tabla), ahora en el modelo de Posts ya no tenemos solamente
+        el metodo de "belongsTo" (Porque este es solo para indicar que tiene una relacion con un unico registro) y aqui tenemos "belongsToMany" (Solo vamos a crear esta tercera tabla pero no el modelo)
+        La implementacion de los modelos solo seria la de Post y Tag
+
+            - php artisan make:migration create_tags_table (Nuevo Modelo)
+            - php artisan make:migration create_post_tag_table (Esta es la tercera tabla)
+            (Al terminar se ejecutan las migraciones)
+            - php artisan migrate
+            (Creamos el modelo)
+            - php artisan make:model Tag
+
+            Despues de crear todo hacemos pruebas con tinker (Nos creamos etiquetas en la BD)
+            - use App\Models\Tags; (Si no reconoce la entidad la importamos)
+            - $tag = new Tag() (Verificamos que si tomo la importacion1)
+            - $tag->name='Tag 1'; -> Creamos una indicando el nombre
+            - $tag->save(); (La guardamos en la BD)
+            (Creamos otras dos)
+            - $tag = new Tag();
+            - $tag->name='Tag 3';
+            - $tag->save();
+            - $tag = new Tag(); (Le hacemos asi porque si no estamos usando la misma entidad y solo estariamos haciendo un Update)
+            - $tag->name='Tag 2';
+            - $tag->save();
+            (Preguntamos por la relacion de Post, que en este punto no tenemos nada porque no hay nada asignado) 
+            - $tag->posts
+            - $post->tags
+            Para asignarle a la relacion tenemos varios metodos como:
+                * attach() -> Atrapa el identificador que le pasemos para la primera entidad que le pasemos, buscando en la segunda entidad que la declaramos abriendo
+                              y rerrando los parentesis (Para acceder a la relacion)
+                * detach() -> Es el contrario al de arriba, eliminando la realcion de las tablas
+                * sync() ->   Sincronizamos el listado de identificadores proporcionados, eliminando los identificadores que no esten presentes en la lista y agrega 
+                              los que estan presentes
+            (Aqui lo vamos hacer desde el POST, en "attach" le podemos pasar el identificador o la entidad)
+            - $post->tags()->attach($tag)
+            (Para ver el resultado desbemos volver a aplicar el GET)
+            - $post = Post::find(81)
+            (Aqui fijemonos que si no le colocamos los parentesis nos regresa directamente una coleccion por tanto solo tenemos metodos de este objeto)
+            - $post->tags
+            (Si le colocamos los parentesis nos regresa el nombre de la Relacion por tanto podemos hacer operaciones de Query SQL) 
+            - $post->tags()
+            (Esta es una relacion espejo por tanto las mismas operaciones se las podemos aplicar a la inversa entre las dos entidades) 
+
     Relaciones Polimorficas:    
         Esto lo podemos ver empleado en la tabla de la base de datos "model_has_roles" en la columna "model" donde viene que le estamos asignando el Rol, una relacion polimorfica puede ser
         aplicada a cualquier tipo de relacion a la cual le agregamos una columna adicional en donde indicamos a quien se la estamos asignando

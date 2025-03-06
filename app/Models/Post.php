@@ -12,6 +12,7 @@ class Post extends Model
     // Aqui tenemos que agregar la nuevo columna "user_id" (No importa el orden de donde lo coloquemos) 
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'description', 'posted', 'image', 'user_id'];
 
+    // Aqui ya habiamos hecho una relacion Uno a Muchos (Dentro de la categoria tenemos el metodo de HasMany)
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -22,5 +23,12 @@ class Post extends Model
     {
         // Cuando son archivos que estan al mismo nivel no se tiene que colocar el import mediante el USE
         return $this->belongsTo(User::class);
+    }
+
+    // Relacion de las etiquetas
+    public function tags()
+    {
+        // Como tenemos de 0 a N etiquetas aqui es el Many
+        return $this->belongsToMany(Tag::class);
     }
 }
