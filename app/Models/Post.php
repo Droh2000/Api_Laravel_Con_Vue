@@ -16,4 +16,11 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    // Si fuera para el usuario se colocaria asi
+    public function user()
+    {
+        // Cuando son archivos que estan al mismo nivel no se tiene que colocar el import mediante el USE
+        return $this->belongsTo(User::class);
+    }
 }

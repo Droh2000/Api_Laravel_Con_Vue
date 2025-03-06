@@ -374,4 +374,34 @@ Cache de las Rutas
             Le indicamos el permiso por el cual queremos preguntar. En tinker fallo pero podemos emplear el "dd()" en laravel para verificar
                 * User::find(2)->hasPermissionTo('editor.post.create')
             Asi preguntamos por los roles
-                * User::find(2)->hasRole('Admin')    
+                * User::find(2)->hasRole('Admin')   
+
+Relaciones 
+    Uno a Uno: Aqui vamos a crear un perfil para el usuario y asi extender la tabla de usuarios (Nos creamos una tabla asociada a la tabla de usuarios, asi evitamos problemas
+               que tendriamos si editaramos directamente la tabla de usuarios)
+
+                    - php artisan make:migration create_profile_table
+                
+                Despues de toda la implementacion hacemos la prueba en tinker
+                    - php artisan tinker  -> Abrimos en la terminal tinker
+                    - $user = new User(); -> Creamos una nueva entidad de usuarios
+                    - $user = User::find(1) -> Buscamos el usuario 1 en la BD
+                    ( Para poder hacer la prueba insertamos datos manualmente en la tabla de Profile en la BD
+                        Despues de hacer esto tenemos que volver a cerrar tiker y repetir el proceso )
+                    - use\App\Models\Profile
+                    - $profile = Profile::find(1);
+                    - $profile->user -> Aqui buscamos el usuario que le corresponde
+                    - $user = User::find(1)->profile; -> Aqui del usuario sacvamos la relacion
+
+    Uno a Muchos: Esta es la que tenemos de Categoria a Posts, un post tiene asignado solo una categoria y una categoria tiene muchos Posts
+    Muchos a Muchos: Aqui es donde tenemos que crear una tercera tabla que es la que mantiene la relacion, aqui vamos a usar el modelo de etiquetas que se la vamos a asignar a las publicaciones
+                    es decir un post puede tener multiples etiquetas y esas etiquetas se pueden reutilizar en otras publicaciones
+
+    Relaciones Polimorficas:    
+        Esto lo podemos ver empleado en la tabla de la base de datos "model_has_roles" en la columna "model" donde viene que le estamos asignando el Rol, una relacion polimorfica puede ser
+        aplicada a cualquier tipo de relacion a la cual le agregamos una columna adicional en donde indicamos a quien se la estamos asignando
+            Por ejemplo regresando al ejemplo donde tenemos las etiquetas y que nuestra applicacion a parte de posts tambien maneja videos a los cuales les podemos asignar etiquetas, en lugar
+            de crear otras tablas (una para los posts y otra para los videos) podemos usar una misma tabla que es la que tiene la etiqueta y lo que le pertence si es un post o un video
+
+            En pocas palabras la relacion polimorfica nos agrega una columna adicional donde viene hacia cual modelo es al que pertenece
+

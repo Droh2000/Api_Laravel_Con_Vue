@@ -52,6 +52,9 @@ class User extends Authenticatable
 
     // Recordemos que un usuario puede tener multiples Posts por eso la relacion de hasMany
     function posts(){
+        // Aqui se coloca HasMany porque es la principal 
+        // este tipo de relaciones se colocan a la inversa en este caso los usuarios no tienen asignados los Post sino que son los posts
+        // los que tienen asignado el usuario
         return $this->hasMany(Post::class);
     }
 
@@ -76,6 +79,12 @@ class User extends Authenticatable
         // return $this->rol == 'admin';
         // El usuario Regular tambien podra acceder a esta opcion 
         return $this->hasRole('Editor') || $this->hasRole('Admin');
+    }
+
+    // Aqui le agregamos la relacion con el Profile (Esto seria la relacion inversa)
+    function profile(){
+        // la relacion es de tipo Uno a Uno
+        return $this->hasOne(Profile::class);
     }
 
 }
