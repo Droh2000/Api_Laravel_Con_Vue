@@ -26,9 +26,16 @@ class Post extends Model
     }
 
     // Relacion de las etiquetas
-    public function tags()
+    /*public function tags()
     {
         // Como tenemos de 0 a N etiquetas aqui es el Many
         return $this->belongsToMany(Tag::class);
+    }*/
+
+    // Relacion polimorfica (Esta es la relacion secundaria)
+    public function tags()
+    {   
+        // Entre comilla le pasamos el nombre de la relacion que como el de la tabla es singular se la pasamos asi
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

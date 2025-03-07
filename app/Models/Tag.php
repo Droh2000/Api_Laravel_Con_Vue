@@ -11,10 +11,16 @@ class Tag extends Model
 
     protected $fillable = ['name'];
 
-    public function posts()
+    /*public function posts()
     {
         // Es la misma relacion ya que por la tercera tabla tenemos la columna que le corresponde
         // para los Posts en este caso
         return $this->belongsToMany(Post::class);
+    }*/
+
+    // Relacion polimorfica 
+    public function posts()
+    {
+        return $this->morphedByMany(Post::class, 'taggable');
     }
 }

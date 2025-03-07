@@ -457,3 +457,17 @@ Relaciones
 
             En pocas palabras la relacion polimorfica nos agrega una columna adicional donde viene hacia cual modelo es al que pertenece
 
+        Esta realcion se puede aplicar a cualquiera de los tipos, en este caso vamos a aplicar una de muchos a muchos. Tenemos el ejemplo en donde la tabla "post_tag" que es la tabla pivote que es la
+        que permite almacenar los ID de los posts y tags, esta misma relacion de querer agregar los Tags lo queremos colocar a otra entidad aparte de los Posts, para un caso normal nos tendriamos que 
+        crear otra tabla donde estos los IDs de los videos y Tags, aqui entran las relaciones polimorficas con lo cual podemos emplear una misma tabla donde podemos tener todas las entidades que queremos
+        agreagarle los Tags sin crear mas tablas, en la relacion de muchos a muchos nos ahorramos la tabla pivote 
+
+            - php artisan make:migration create_taggables_table
+
+        Pruebas:
+            - php artisan tinker
+            - $post = Post::find(80)
+            - $post->tags // Preguntamos por 'tags' porque asi se llama el metodo en el modelo Post
+            - $post->tags()->sync(3)
+            - $post->tags // Aqui si podremos ver la relacion ya que antes no salia la lista vacia
+            
